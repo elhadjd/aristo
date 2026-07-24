@@ -20,12 +20,15 @@ Built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Prisma 
 
 ```bash
 npm install
+cp .env.example .env
 cp .env.example .env.local
 npm run db:setup
 npm run dev
 ```
 
 > **Windows note:** The app uses **LibSQL** (no native compile). You do **not** need Python or Visual Studio Build Tools for `npm install`.
+>
+> Prisma reads **`.env`** (not only `.env.local`). Create both files from `.env.example`, or at least ensure `.env` contains `DATABASE_URL="file:./prisma/dev.db"`.
 
 - Website: [http://localhost:3000](http://localhost:3000)
 - Admin: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
