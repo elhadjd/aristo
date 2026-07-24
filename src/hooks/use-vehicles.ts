@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getVehicles } from "@/services/vehicles";
 import type { PaginatedResponse, Vehicle, VehicleFilters } from "@/types/vehicle";
 
@@ -8,13 +8,19 @@ export function useVehicles(filters: VehicleFilters) {
   const [data, setData] = useState<PaginatedResponse<Vehicle> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const filterKey = useMemo(() => JSON.stringify(filters), [filters]);
 
   useEffect(() => {
     let active = true;
-    setLoading(true);
-    setError(null);
+    const parsed = JSON.parse(filterKey) as VehicleFilters;
 
-    getVehicles(filters)
+    queueMicrotask(() => {
+      if (!active) return;
+      setLoading(true);
+      setError(null);
+    });
+
+    getVehicles(parsed)
       .then((result) => {
         if (active) setData(result);
       })
@@ -28,7 +34,7 @@ export function useVehicles(filters: VehicleFilters) {
     return () => {
       active = false;
     };
-  }, [JSON.stringify(filters)]);
+  }, [filterKey]);
 
   return { data, loading, error };
 }
