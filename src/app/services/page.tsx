@@ -11,14 +11,9 @@ import {
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { listServices } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Services",
-  description:
-    "ARISTO services include financing, vehicle import, inspection, warranty, maintenance, trade-in, and delivery.",
-  path: "/services",
-});
+export const metadata = pageMetadata("services");
 
 const iconMap = {
   CreditCard,

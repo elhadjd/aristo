@@ -3,14 +3,9 @@ import { LoanCalculator } from "@/features/financing/loan-calculator";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { getSiteSettings } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Financing",
-  description:
-    "ARISTO financing specialists help structure competitive auto loans with transparent terms in Columbus, Ohio.",
-  path: "/financing",
-});
+export const metadata = pageMetadata("financing");
 
 export default async function FinancingPage() {
   const settings = await getSiteSettings();
@@ -18,8 +13,8 @@ export default async function FinancingPage() {
   return (
     <>
       <PageHero
-        title="Financing"
-        description={`Competitive rates from ${settings.financingRateFrom}% APR with guidance tailored to your goals.`}
+        title="Car Financing in Columbus, OH"
+        description={`Competitive auto loans from ${settings.financingRateFrom}% APR in Columbus, Ohio — clear monthly payments for used and luxury cars.`}
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Financing" }]} />

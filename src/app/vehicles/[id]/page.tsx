@@ -16,6 +16,8 @@ import {
   breadcrumbJsonLd,
   buildMetadata,
   vehicleJsonLd,
+  vehicleSeoDescription,
+  vehicleSeoKeywords,
 } from "@/lib/seo";
 import { cn } from "@/utils/cn";
 import { formatCurrency, formatMileage } from "@/utils/format";
@@ -30,10 +32,24 @@ export async function generateMetadata({ params }: Params) {
     return buildMetadata({ title: "Vehicle not found", path: `/vehicles/${id}`, noIndex: true });
   }
   return buildMetadata({
-    title: vehicle.name,
-    description: vehicle.description,
+    title: `${vehicle.year} ${vehicle.brand} ${vehicle.model} for Sale in Columbus, OH`,
+    description: vehicleSeoDescription({
+      name: vehicle.name,
+      brand: vehicle.brand,
+      model: vehicle.model,
+      year: vehicle.year,
+      price: vehicle.price,
+      mileage: vehicle.mileage,
+      description: vehicle.description,
+    }),
     path: `/vehicles/${vehicle.id}`,
     image: vehicle.images[0],
+    keywords: vehicleSeoKeywords({
+      brand: vehicle.brand,
+      model: vehicle.model,
+      year: vehicle.year,
+      bodyStyle: vehicle.bodyStyle,
+    }),
   });
 }
 

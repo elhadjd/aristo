@@ -1,20 +1,42 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
+import { defaultKeywords, pageSeo } from "@/config/seo";
 import { getArticle } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import {
+  articleJsonLd,
+  breadcrumbJsonLd,
+  buildMetadata,
+} from "@/lib/seo";
 
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params;
   const article = await getArticle(slug);
-  if (!article) return buildMetadata({ title: "Article", path: `/articles/${slug}`, noIndex: true });
+  if (!article) {
+    return buildMetadata({ title: "Article", path: `/articles/${slug}`, noIndex: true });
+  }
+  const description =
+    article.excerpt ||
+    article.content.replace(/\s+/g, " ").trim().slice(0, 155) ||
+    pageSeo.articles.description;
   return buildMetadata({
     title: article.title,
-    description: article.excerpt || article.content.slice(0, 140),
+    description: description.length > 160 ? `${description.slice(0, 157).trim()}…` : description,
     path: `/articles/${article.slug}`,
     image: article.coverImage || undefined,
+    keywords: [
+      ...defaultKeywords,
+      ...pageSeo.articles.keywords,
+      article.title,
+      "ARISTO blog",
+      "Columbus car buying tips",
+    ],
+    type: "article",
+    publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
+    modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
   });
 }
 
@@ -23,8 +45,28 @@ export default async function ArticlePage({ params }: Params) {
   const article = await getArticle(slug);
   if (!article) notFound();
 
+  const path = `/articles/${article.slug}`;
+  const description = article.excerpt || article.content.slice(0, 160);
+
   return (
     <article className="section-shell py-28">
+      <JsonLd
+        data={[
+          articleJsonLd({
+            title: article.title,
+            description,
+            path,
+            image: article.coverImage || undefined,
+            publishedAt: article.publishedAt,
+            updatedAt: article.updatedAt,
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Articles", path: "/articles" },
+            { name: article.title, path },
+          ]),
+        ]}
+      />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

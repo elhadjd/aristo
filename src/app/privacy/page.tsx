@@ -1,13 +1,9 @@
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { siteConfig } from "@/config/site";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Privacy Policy",
-  description: "Privacy policy for ARISTO dealership website visitors and customers.",
-  path: "/privacy",
-});
+export const metadata = pageMetadata("privacy");
 
 export default function PrivacyPage() {
   return (

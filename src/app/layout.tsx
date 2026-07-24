@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { SiteShell } from "@/components/layout/site-shell";
 import { JsonLd } from "@/components/seo/json-ld";
+import { defaultKeywords } from "@/config/seo";
 import { siteConfig } from "@/config/site";
-import { buildMetadata, organizationJsonLd } from "@/lib/seo";
+import { organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -20,22 +21,24 @@ const body = Manrope({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  ...buildMetadata({
-    title: siteConfig.name,
-    description: siteConfig.description,
-    path: "/",
-  }),
-  keywords: [
-    "ARISTO",
-    "luxury cars Columbus",
-    "used cars Ohio",
-    "dealership Westerville Rd",
-    "car financing Columbus",
-    "trade-in",
-  ],
-  authors: [{ name: siteConfig.legalName }],
+  ...pageMetadata("home"),
+  keywords: [...defaultKeywords],
+  authors: [{ name: siteConfig.legalName, url: siteConfig.url }],
   creator: siteConfig.name,
   publisher: siteConfig.legalName,
+  applicationName: siteConfig.name,
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: true,
+    telephone: true,
+  },
+  other: {
+    "geo.region": "US-OH",
+    "geo.placename": "Columbus",
+    "geo.position": "40.0605;-82.9452",
+    ICBM: "40.0605, -82.9452",
+  },
 };
 
 export const viewport: Viewport = {
@@ -51,7 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col antialiased">
-        <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>
