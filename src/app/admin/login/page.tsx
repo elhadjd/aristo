@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0f172a] px-4">
       <form
-        className="w-full max-w-md rounded-3xl border border-white/10 bg-white p-8 shadow-lift"
+        className="w-full max-w-md rounded-3xl border border-white/10 bg-card p-8 shadow-lift"
         onSubmit={async (event) => {
           event.preventDefault();
           setLoading(true);

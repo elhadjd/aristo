@@ -63,8 +63,8 @@ export default function AdminSettingsPage() {
         <div
           className={`rounded-2xl border p-4 text-sm ${
             sisgesc.configured
-              ? "border-border bg-white text-ink"
-              : "border-secondary/40 bg-secondary/5 text-ink"
+              ? "border-border bg-card text-foreground"
+              : "border-secondary/40 bg-secondary/5 text-foreground"
           }`}
         >
           <p className="font-medium">
@@ -79,7 +79,7 @@ export default function AdminSettingsPage() {
       ) : null}
 
       <form
-        className="grid gap-4 rounded-2xl border border-border bg-white p-5 shadow-soft md:grid-cols-2"
+        className="grid gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft md:grid-cols-2"
         onSubmit={async (event) => {
           event.preventDefault();
           const response = await fetch("/api/admin/settings", {

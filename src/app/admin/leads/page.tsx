@@ -54,7 +54,7 @@ export default function AdminLeadsPage() {
         {leads.map((lead) => (
           <article
             key={lead.id}
-            className="rounded-2xl border border-border bg-white p-5 shadow-soft"
+            className="rounded-2xl border border-border bg-card p-5 shadow-soft"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>

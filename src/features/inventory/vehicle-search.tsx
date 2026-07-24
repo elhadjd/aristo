@@ -51,16 +51,18 @@ export function VehicleSearch({ light = false }: { light?: boolean }) {
           onChange={(e) => setQ(e.target.value)}
           placeholder="Make, model, or keyword"
           aria-label="Search keyword"
-          className={cn(light && "border-white/15 bg-white/95")}
+          className={cn(
+            light && "border-white/20 bg-[#111827]/95 text-white placeholder:text-white/55",
+          )}
           autoComplete="off"
         />
         {suggestions.length > 0 ? (
-          <ul className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-20 overflow-hidden rounded-xl border border-border bg-card shadow-lift">
+          <ul className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-20 overflow-hidden rounded-xl border border-border bg-card text-foreground shadow-lift">
             {suggestions.map((item) => (
               <li key={item}>
                 <button
                   type="button"
-                  className="w-full px-4 py-2.5 text-left text-sm hover:bg-muted-bg"
+                  className="w-full px-4 py-2.5 text-left text-sm text-foreground hover:bg-muted-bg"
                   onClick={() => {
                     setQ(item);
                     router.push(`/inventory?q=${encodeURIComponent(item)}`);
@@ -77,7 +79,10 @@ export function VehicleSearch({ light = false }: { light?: boolean }) {
         value={brand}
         onChange={(e) => setBrand(e.target.value)}
         aria-label="Brand"
-        className={cn(light && "border-white/15 bg-white/95")}
+        className={cn(
+          light &&
+            "border-white/20 bg-[#111827]/95 text-white [&_option]:bg-[#111827] [&_option]:text-white",
+        )}
       >
         {brands.map((item) => (
           <option key={item}>{item}</option>
@@ -87,7 +92,10 @@ export function VehicleSearch({ light = false }: { light?: boolean }) {
         value={bodyStyle}
         onChange={(e) => setBodyStyle(e.target.value)}
         aria-label="Body style"
-        className={cn(light && "border-white/15 bg-white/95")}
+        className={cn(
+          light &&
+            "border-white/20 bg-[#111827]/95 text-white [&_option]:bg-[#111827] [&_option]:text-white",
+        )}
       >
         {bodyStyles.map((item) => (
           <option key={item}>{item}</option>

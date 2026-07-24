@@ -61,7 +61,7 @@ export function SimpleResourcePage({
       </div>
 
       <form
-        className="grid gap-3 rounded-2xl border border-border bg-white p-5 shadow-soft md:grid-cols-2"
+        className="grid gap-3 rounded-2xl border border-border bg-card p-5 shadow-soft md:grid-cols-2"
         onSubmit={async (event) => {
           event.preventDefault();
           const payload = toPayload ? toPayload(form) : form;
@@ -137,7 +137,7 @@ export function SimpleResourcePage({
           return (
             <div
               key={String(row.id)}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-white p-4 shadow-soft"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft"
             >
               <div>
                 <p className="font-medium">{String(view.title || view.name || view.question || row.id)}</p>
