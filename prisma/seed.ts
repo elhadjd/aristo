@@ -1,4 +1,4 @@
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { PrismaClient } from "../src/generated/prisma/client";
 import bcrypt from "bcryptjs";
@@ -6,6 +6,9 @@ import { mockBrands, mockCategories, mockServices, mockSettings, mockTestimonial
 import { mockVehicles } from "../src/data/mock-vehicles";
 import { faqItems } from "../src/constants/faq";
 import { resolveDatabaseUrl } from "../src/lib/db";
+
+loadEnv({ path: ".env" });
+loadEnv({ path: ".env.local", override: true });
 
 const adapter = new PrismaLibSql({ url: resolveDatabaseUrl() });
 const prisma = new PrismaClient({ adapter });

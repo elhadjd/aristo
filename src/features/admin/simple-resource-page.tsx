@@ -5,9 +5,10 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageField } from "@/features/admin/image-field";
 
 type Field =
-  | { key: string; label: string; type?: "text" | "number" | "textarea" | "checkbox" }
+  | { key: string; label: string; type?: "text" | "number" | "textarea" | "checkbox" | "image" }
   | { key: string; label: string; type: "list"; hint?: string };
 
 export function SimpleResourcePage({
@@ -78,37 +79,46 @@ export function SimpleResourcePage({
           load();
         }}
       >
-        {fields.map((field) => (
-          <label key={field.key} className="block text-sm md:col-span-1">
-            <span className="mb-1.5 block font-medium">{field.label}</span>
-            {field.type === "textarea" || field.type === "list" ? (
-              <Textarea
-                rows={4}
-                value={String(form[field.key] ?? "")}
-                onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                placeholder={field.type === "list" ? field.hint || "One item per line" : undefined}
-              />
-            ) : field.type === "checkbox" ? (
-              <input
-                type="checkbox"
-                checked={Boolean(form[field.key])}
-                onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.checked }))}
-              />
-            ) : (
-              <Input
-                type={field.type === "number" ? "number" : "text"}
-                value={String(form[field.key] ?? "")}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    [field.key]:
-                      field.type === "number" ? Number(e.target.value) : e.target.value,
-                  }))
-                }
-              />
-            )}
-          </label>
-        ))}
+        {fields.map((field) =>
+          field.type === "image" ? (
+            <ImageField
+              key={field.key}
+              label={field.label}
+              value={String(form[field.key] ?? "")}
+              onChange={(value) => setForm((prev) => ({ ...prev, [field.key]: value }))}
+            />
+          ) : (
+            <label key={field.key} className="block text-sm md:col-span-1">
+              <span className="mb-1.5 block font-medium">{field.label}</span>
+              {field.type === "textarea" || field.type === "list" ? (
+                <Textarea
+                  rows={4}
+                  value={String(form[field.key] ?? "")}
+                  onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                  placeholder={field.type === "list" ? field.hint || "One item per line" : undefined}
+                />
+              ) : field.type === "checkbox" ? (
+                <input
+                  type="checkbox"
+                  checked={Boolean(form[field.key])}
+                  onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.checked }))}
+                />
+              ) : (
+                <Input
+                  type={field.type === "number" ? "number" : "text"}
+                  value={String(form[field.key] ?? "")}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      [field.key]:
+                        field.type === "number" ? Number(e.target.value) : e.target.value,
+                    }))
+                  }
+                />
+              )}
+            </label>
+          ),
+        )}
         <div className="flex gap-2 md:col-span-2">
           <Button type="submit" variant="secondary">
             {editingId ? "Update" : "Create"}

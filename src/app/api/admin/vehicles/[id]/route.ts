@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminResponse, jsonError } from "@/lib/admin-api";
 import { prisma } from "@/lib/db";
+import { imageRefSchema } from "@/lib/image-ref";
 import { mapDbVehicle } from "@/lib/mappers";
 
 const vehicleSchema = z.object({
@@ -28,7 +29,7 @@ const vehicleSchema = z.object({
   published: z.boolean(),
   categoryId: z.string().optional().nullable(),
   features: z.array(z.string()),
-  images: z.array(z.string()),
+  images: z.array(imageRefSchema),
   attributes: z.array(z.object({ label: z.string(), value: z.string() })),
   sortOrder: z.number().int().optional(),
 });

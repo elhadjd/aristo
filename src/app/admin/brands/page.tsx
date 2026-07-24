@@ -10,7 +10,7 @@ export default function AdminBrandsPage() {
       endpoint="/api/admin/brands"
       fields={[
         { key: "name", label: "Name" },
-        { key: "logo", label: "Logo URL" },
+        { key: "logo", label: "Logo", type: "image" },
       ]}
       mapRow={(row) => ({ ...row, title: row.name, subtitle: row.slug })}
     />

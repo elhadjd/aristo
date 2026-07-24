@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminResponse, jsonError } from "@/lib/admin-api";
 import { prisma } from "@/lib/db";
+import { optionalImageRefSchema } from "@/lib/image-ref";
 import { mapDbSettings } from "@/lib/mappers";
 
 const schema = z.object({
@@ -14,7 +15,7 @@ const schema = z.object({
   address: z.string(),
   heroTitle: z.string(),
   heroSubtitle: z.string(),
-  heroImage: z.string(),
+  heroImage: optionalImageRefSchema,
   financingRateFrom: z.number(),
   mapEmbedUrl: z.string().optional(),
   hoursJson: z.string().optional(),

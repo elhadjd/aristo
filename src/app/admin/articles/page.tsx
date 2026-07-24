@@ -12,7 +12,7 @@ export default function AdminArticlesPage() {
         { key: "title", label: "Title" },
         { key: "excerpt", label: "Excerpt", type: "textarea" },
         { key: "content", label: "Content", type: "textarea" },
-        { key: "coverImage", label: "Cover image URL" },
+        { key: "coverImage", label: "Cover image", type: "image" },
         { key: "published", label: "Published", type: "checkbox" },
       ]}
       mapRow={(row) => ({

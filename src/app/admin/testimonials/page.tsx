@@ -13,6 +13,7 @@ export default function AdminTestimonialsPage() {
         { key: "role", label: "Role / location" },
         { key: "rating", label: "Rating (1-5)", type: "number" },
         { key: "content", label: "Review", type: "textarea" },
+        { key: "avatar", label: "Avatar", type: "image" },
         { key: "vehiclePurchased", label: "Vehicle purchased" },
         { key: "published", label: "Published", type: "checkbox" },
         { key: "sortOrder", label: "Sort order", type: "number" },
