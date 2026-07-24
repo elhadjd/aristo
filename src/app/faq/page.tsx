@@ -1,6 +1,7 @@
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { faqItems } from "@/constants/faq";
+import { listFaq } from "@/lib/data";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -9,7 +10,12 @@ export const metadata = buildMetadata({
   path: "/faq",
 });
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const dbFaq = await listFaq();
+  const items = dbFaq.length
+    ? dbFaq.map((item) => ({ question: item.question, answer: item.answer }))
+    : faqItems;
+
   return (
     <>
       <PageHero
@@ -19,7 +25,7 @@ export default function FaqPage() {
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
         <div className="mx-auto max-w-3xl space-y-4">
-          {faqItems.map((item) => (
+          {items.map((item) => (
             <details
               key={item.question}
               className="group rounded-2xl border border-border bg-card p-5 shadow-soft open:shadow-lift"

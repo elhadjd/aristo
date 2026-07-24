@@ -13,7 +13,10 @@ import { submitContact } from "@/services/pages";
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email required"),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .min(7, "Phone is required")
+    .max(20, "Phone must be 20 characters or less"),
   interest: z.enum(["purchase", "financing", "trade-in", "service", "general"]),
   subject: z.string().optional(),
   message: z.string().min(10, "Please share a few more details"),
@@ -45,9 +48,25 @@ export function ContactForm({
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await submitContact(values);
+      await submitContact({
+        ...values,
+        service: values.vehicleId,
+        serviceType: values.interest,
+        metadata: {
+          form: "contact",
+          vehicleId: values.vehicleId,
+        },
+      });
       toast.success("Message sent. Our team will respond shortly.");
-      reset({ interest: defaultInterest, vehicleId, name: "", email: "", phone: "", message: "", subject: vehicleId ? "Vehicle inquiry" : "" });
+      reset({
+        interest: defaultInterest,
+        vehicleId,
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+        subject: vehicleId ? "Vehicle inquiry" : "",
+      });
     } catch (error) {
       const err = error as { message?: string };
       toast.error(err.message || "Unable to send message");
@@ -65,8 +84,8 @@ export function ContactForm({
         </Field>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Phone" error={errors.phone?.message}>
-          <Input type="tel" {...register("phone")} autoComplete="tel" />
+        <Field label="Phone *" error={errors.phone?.message}>
+          <Input type="tel" {...register("phone")} autoComplete="tel" required maxLength={20} />
         </Field>
         <Field label="Interest" error={errors.interest?.message}>
           <Select {...register("interest")}>

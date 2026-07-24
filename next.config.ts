@@ -16,6 +16,11 @@ const sisgescHosts = [
 
 const nextConfig: NextConfig = {
   images: {
+    localPatterns: [
+      {
+        pathname: "/uploads/**",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
@@ -36,6 +41,7 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
+  serverExternalPackages: ["better-sqlite3", "@prisma/adapter-better-sqlite3"],
   poweredByHeader: false,
   compress: true,
   reactStrictMode: true,

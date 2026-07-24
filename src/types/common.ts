@@ -59,11 +59,14 @@ export interface SiteSettings {
 export interface ContactPayload {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   subject?: string;
-  message: string;
+  message?: string;
   vehicleId?: string;
   interest?: "purchase" | "financing" | "trade-in" | "service" | "general";
+  service?: number | string;
+  serviceType?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface TradeInPayload {
