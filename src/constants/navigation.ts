@@ -11,6 +11,7 @@ export const footerNav = {
   company: [
     { label: "About ARISTO", href: "/about" },
     { label: "Testimonials", href: "/testimonials" },
+    { label: "Articles", href: "/articles" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
   ],

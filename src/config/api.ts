@@ -1,44 +1,27 @@
-function parseIdList(value: string | undefined): number[] {
-  if (!value?.trim()) return [];
-  return value
-    .split(",")
-    .map((item) => Number(item.trim()))
-    .filter((item) => Number.isFinite(item));
-}
-
 export const apiConfig = {
   /** Browser / same-origin API base. Empty string = relative /api */
   publicBaseUrl: process.env.NEXT_PUBLIC_API_URL || "",
   /**
-   * SISGESC host only, e.g. https://erp.example.com
-   * Site catalog lives at `{host}/api/site/...`
+   * SISGESC host for contact/lead sync only (not catalog).
+   * Example: https://erp.example.com
    */
   sisgescBaseUrl: process.env.SISGESC_API_URL || "",
   /**
-   * Site API key (`key` query/header). Kept server-side only.
-   * Accepts SISGESC_SITE_API_KEY or legacy SISGESC_API_KEY.
+   * Site API key for SISGESC contact endpoints (`key` query/header).
+   * Server-side only.
    */
   sisgescSiteApiKey:
     process.env.SISGESC_SITE_API_KEY || process.env.SISGESC_API_KEY || "",
-  /** Optional company id for `/api/site/product/{company}/{product}` */
-  sisgescCompanyId: process.env.SISGESC_COMPANY_ID
-    ? Number(process.env.SISGESC_COMPANY_ID)
-    : undefined,
-  /**
-   * product_type_id values treated as services.
-   * Example from SISGESC docs: service rows often use type id 2.
-   */
-  sisgescServiceTypeIds: parseIdList(process.env.SISGESC_SERVICE_TYPE_IDS || "2"),
-  /** Optional public media/CDN host when product.image is relative */
-  sisgescMediaBaseUrl:
-    process.env.SISGESC_MEDIA_URL || process.env.SISGESC_API_URL || "",
   timeoutMs: 15000,
   defaultPageSize: 12,
   cacheTtlSeconds: 60,
 } as const;
 
-export function isSisgescConfigured(): boolean {
-  return Boolean(apiConfig.sisgescBaseUrl && apiConfig.sisgescSiteApiKey);
+export function isSisgescContactConfigured(): boolean {
+  return Boolean(
+    process.env.SISGESC_CONTACT_URL ||
+      (apiConfig.sisgescBaseUrl && apiConfig.sisgescSiteApiKey),
+  );
 }
 
 export function getApiUrl(path: string): string {

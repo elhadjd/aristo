@@ -1,4 +1,12 @@
-import { apiConfig, isSisgescConfigured } from "@/config/api";
+import { prisma } from "@/lib/db";
+import {
+  mapDbBrand,
+  mapDbCategory,
+  mapDbService,
+  mapDbSettings,
+  mapDbTestimonial,
+  mapDbVehicle,
+} from "@/lib/mappers";
 import {
   mockBrands,
   mockCategories,
@@ -7,19 +15,6 @@ import {
   mockTestimonials,
 } from "@/data/mock-catalog";
 import { mockVehicles } from "@/data/mock-vehicles";
-import {
-  mapProductsToBrands,
-  mapProductsToCategories,
-  mapSiteSettings,
-  splitCatalog,
-} from "@/lib/sisgesc-mappers";
-import {
-  fetchSiteCompany,
-  fetchSiteInfo,
-  fetchSiteProduct,
-  fetchSiteProducts,
-  searchSiteProducts,
-} from "@/lib/sisgesc";
 import type {
   Brand,
   Category,
@@ -27,109 +22,56 @@ import type {
   SiteSettings,
   Testimonial,
 } from "@/types/common";
-import type { SisgescProduct } from "@/types/sisgesc";
 import type { PaginatedResponse, Vehicle, VehicleFilters } from "@/types/vehicle";
 import { filterVehicles } from "@/utils/vehicles";
 
-type CatalogSnapshot = {
-  products: SisgescProduct[];
-  vehicles: Vehicle[];
-  services: DealershipService[];
-  fetchedAt: number;
-};
-
-let catalogCache: CatalogSnapshot | null = null;
-
-async function loadCatalog(force = false): Promise<CatalogSnapshot | null> {
-  if (!isSisgescConfigured()) return null;
-
-  const fresh =
-    catalogCache && Date.now() - catalogCache.fetchedAt < apiConfig.cacheTtlSeconds * 1000;
-  if (!force && fresh && catalogCache) return catalogCache;
-
+async function dbReady() {
   try {
-    const products = (await fetchSiteProducts()) || [];
-    const { vehicles, services } = splitCatalog(products);
-    catalogCache = {
-      products,
-      vehicles,
-      services,
-      fetchedAt: Date.now(),
-    };
-    return catalogCache;
-  } catch (error) {
-    console.error("[ARISTO] Failed to load SISGESC catalog", error);
-    return catalogCache;
+    await prisma.siteSetting.findUnique({ where: { id: "default" } });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function loadPublishedVehicles(): Promise<Vehicle[]> {
+  try {
+    const rows = await prisma.vehicle.findMany({
+      where: { published: true },
+      include: { images: true, attributes: true, brand: true, category: true },
+      orderBy: [{ featured: "desc" }, { sortOrder: "asc" }, { updatedAt: "desc" }],
+    });
+    if (!rows.length) return mockVehicles;
+    return rows.map(mapDbVehicle);
+  } catch {
+    return mockVehicles;
   }
 }
 
 export async function listVehicles(
   filters: VehicleFilters = {},
 ): Promise<PaginatedResponse<Vehicle>> {
-  const catalog = await loadCatalog();
-
-  if (catalog) {
-    if (filters.q?.trim()) {
-      try {
-        const remote = await searchSiteProducts(filters.q.trim());
-        if (remote?.data) {
-          const { vehicles } = splitCatalog(remote.data);
-          return filterVehicles(vehicles, { ...filters, q: undefined, page: filters.page, pageSize: filters.pageSize, sort: filters.sort });
-        }
-      } catch (error) {
-        console.error("[ARISTO] SISGESC search failed, using local filter", error);
-      }
-    }
-    return filterVehicles(catalog.vehicles, filters);
-  }
-
-  return filterVehicles(mockVehicles, filters);
+  const vehicles = await loadPublishedVehicles();
+  return filterVehicles(vehicles, filters);
 }
 
 export async function getVehicle(id: string): Promise<Vehicle | null> {
-  const catalog = await loadCatalog();
-
-  if (catalog) {
-    const fromList = catalog.vehicles.find((vehicle) => vehicle.id === id);
-    if (fromList) {
-      const raw = catalog.products.find((product) => String(product.id) === id);
-      const companyId = apiConfig.sisgescCompanyId || raw?.company_id;
-      if (companyId != null) {
-        try {
-          const detailed = await fetchSiteProduct(companyId, id);
-          if (detailed) {
-            const { vehicles } = splitCatalog([detailed]);
-            return vehicles[0] || fromList;
-          }
-        } catch (error) {
-          console.error("[ARISTO] SISGESC product detail failed", error);
-        }
-      }
-      return fromList;
-    }
-
-    if (apiConfig.sisgescCompanyId != null) {
-      try {
-        const detailed = await fetchSiteProduct(apiConfig.sisgescCompanyId, id);
-        if (detailed) {
-          const { vehicles } = splitCatalog([detailed]);
-          return vehicles[0] || null;
-        }
-      } catch (error) {
-        console.error("[ARISTO] SISGESC product detail failed", error);
-      }
-    }
-
-    return null;
+  try {
+    const row = await prisma.vehicle.findFirst({
+      where: { id, published: true },
+      include: { images: true, attributes: true, brand: true, category: true },
+    });
+    if (row) return mapDbVehicle(row);
+  } catch {
+    // fall through
   }
-
   return mockVehicles.find((vehicle) => vehicle.id === id) || null;
 }
 
 export async function listFeatured(limit = 6): Promise<Vehicle[]> {
-  const { data } = await listVehicles({ sort: "newest", pageSize: Math.max(limit * 2, 12) });
-  const featured = data.filter((vehicle) => vehicle.featured);
-  return (featured.length ? featured : data).slice(0, limit);
+  const vehicles = await loadPublishedVehicles();
+  const featured = vehicles.filter((vehicle) => vehicle.featured);
+  return (featured.length ? featured : vehicles).slice(0, limit);
 }
 
 export async function listLatest(limit = 8): Promise<Vehicle[]> {
@@ -138,46 +80,65 @@ export async function listLatest(limit = 8): Promise<Vehicle[]> {
 }
 
 export async function listCategories(): Promise<Category[]> {
-  const catalog = await loadCatalog();
-  if (catalog) {
-    const categories = mapProductsToCategories(catalog.products);
-    return categories.length ? categories : mockCategories;
+  try {
+    const rows = await prisma.category.findMany({
+      include: { _count: { select: { vehicles: { where: { published: true } } } } },
+      orderBy: { sortOrder: "asc" },
+    });
+    if (!rows.length) return mockCategories;
+    return rows.map((row) => mapDbCategory(row, row._count.vehicles));
+  } catch {
+    return mockCategories;
   }
-  return mockCategories;
 }
 
 export async function listBrands(): Promise<Brand[]> {
-  const catalog = await loadCatalog();
-  if (catalog) {
-    const brands = mapProductsToBrands(catalog.products);
-    return brands.length ? brands : mockBrands;
+  try {
+    const rows = await prisma.brand.findMany({
+      include: { _count: { select: { vehicles: { where: { published: true } } } } },
+      orderBy: { name: "asc" },
+    });
+    if (!rows.length) return mockBrands;
+    return rows.map((row) => mapDbBrand(row, row._count.vehicles));
+  } catch {
+    return mockBrands;
   }
-  return mockBrands;
 }
 
 export async function listServices(): Promise<DealershipService[]> {
-  const catalog = await loadCatalog();
-  if (catalog) {
-    return catalog.services.length ? catalog.services : mockServices;
+  try {
+    const rows = await prisma.service.findMany({
+      where: { published: true },
+      orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    });
+    if (!rows.length) return mockServices;
+    return rows.map(mapDbService);
+  } catch {
+    return mockServices;
   }
-  return mockServices;
 }
 
 export async function listTestimonials(): Promise<Testimonial[]> {
-  // Site API does not expose testimonials in the documented routes.
-  return mockTestimonials;
+  try {
+    const rows = await prisma.testimonial.findMany({
+      where: { published: true },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    });
+    if (!rows.length) return mockTestimonials;
+    return rows.map(mapDbTestimonial);
+  } catch {
+    return mockTestimonials;
+  }
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  if (!isSisgescConfigured()) return mockSettings;
-
   try {
-    const [site, company] = await Promise.all([fetchSiteInfo(), fetchSiteCompany()]);
-    return mapSiteSettings(site, company, mockSettings);
-  } catch (error) {
-    console.error("[ARISTO] Failed to load SISGESC site/company settings", error);
-    return mockSettings;
+    const row = await prisma.siteSetting.findUnique({ where: { id: "default" } });
+    if (row) return mapDbSettings(row);
+  } catch {
+    // fall through
   }
+  return mockSettings;
 }
 
 export async function listRelated(id: string, limit = 4): Promise<Vehicle[]> {
@@ -187,12 +148,37 @@ export async function listRelated(id: string, limit = 4): Promise<Vehicle[]> {
   return data.filter((item) => item.id !== id).slice(0, limit);
 }
 
-export function getSisgescStatus() {
-  return {
-    configured: isSisgescConfigured(),
-    host: apiConfig.sisgescBaseUrl || null,
-    companyId: apiConfig.sisgescCompanyId ?? null,
-    cacheAgeMs: catalogCache ? Date.now() - catalogCache.fetchedAt : null,
-    productCount: catalogCache?.products.length ?? null,
-  };
+export async function listFaq() {
+  try {
+    const rows = await prisma.faqItem.findMany({
+      where: { published: true },
+      orderBy: { sortOrder: "asc" },
+    });
+    return rows;
+  } catch {
+    return [];
+  }
 }
+
+export async function listArticles(publishedOnly = true) {
+  try {
+    return prisma.article.findMany({
+      where: publishedOnly ? { published: true } : undefined,
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getArticle(slug: string) {
+  try {
+    return prisma.article.findFirst({
+      where: { slug, published: true },
+    });
+  } catch {
+    return null;
+  }
+}
+
+export { dbReady };
