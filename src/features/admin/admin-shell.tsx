@@ -75,7 +75,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] text-[#111827]">
+    <div className="min-h-screen bg-muted-bg text-foreground">
       <div className="flex min-h-screen">
         <aside
           className={cn(
@@ -116,7 +116,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-4 sm:px-6">
+          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-card px-4 sm:px-6">
             <button type="button" className="rounded-lg p-2 hover:bg-muted-bg lg:hidden" onClick={() => setOpen(true)}>
               <Menu className="h-5 w-5" />
             </button>

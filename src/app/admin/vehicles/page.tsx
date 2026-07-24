@@ -53,7 +53,7 @@ export default function AdminVehiclesPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-muted-bg/70 text-xs uppercase tracking-wide text-muted">
             <tr>
