@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageField } from "@/features/admin/image-field";
 
 export default function AdminSettingsPage() {
   const [form, setForm] = useState({
@@ -21,6 +22,7 @@ export default function AdminSettingsPage() {
     instagram: "",
     youtube: "",
   });
+  const [sisgesc, setSisgesc] = useState<{ configured: boolean; endpoint?: string } | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/settings")
@@ -41,6 +43,11 @@ export default function AdminSettingsPage() {
           youtube: data.social?.youtube || "",
         });
       });
+
+    fetch("/api/admin/sisgesc-status")
+      .then((res) => res.json())
+      .then(setSisgesc)
+      .catch(() => setSisgesc({ configured: false }));
   }, []);
 
   return (
@@ -51,6 +58,26 @@ export default function AdminSettingsPage() {
           Hero, contact details, and brand content used across the public site.
         </p>
       </div>
+
+      {sisgesc ? (
+        <div
+          className={`rounded-2xl border p-4 text-sm ${
+            sisgesc.configured
+              ? "border-border bg-white text-ink"
+              : "border-secondary/40 bg-secondary/5 text-ink"
+          }`}
+        >
+          <p className="font-medium">
+            SISGESC contact sync: {sisgesc.configured ? "configured" : "not configured"}
+          </p>
+          <p className="mt-1 text-muted">
+            {sisgesc.configured
+              ? `Leads are forwarded to ${sisgesc.endpoint || "the configured endpoint"}.`
+              : "Set SISGESC_API_URL and SISGESC_SITE_API_KEY in `.env` / `.env.local`, then restart the server."}
+          </p>
+        </div>
+      ) : null}
+
       <form
         className="grid gap-4 rounded-2xl border border-border bg-white p-5 shadow-soft md:grid-cols-2"
         onSubmit={async (event) => {
@@ -82,7 +109,6 @@ export default function AdminSettingsPage() {
             ["email", "Email"],
             ["address", "Address"],
             ["heroTitle", "Hero title"],
-            ["heroImage", "Hero image URL"],
             ["facebook", "Facebook URL"],
             ["instagram", "Instagram URL"],
             ["youtube", "YouTube URL"],
@@ -96,6 +122,13 @@ export default function AdminSettingsPage() {
             />
           </label>
         ))}
+        <div className="md:col-span-2">
+          <ImageField
+            label="Hero image"
+            value={form.heroImage}
+            onChange={(heroImage) => setForm((prev) => ({ ...prev, heroImage }))}
+          />
+        </div>
         <label className="block text-sm md:col-span-2">
           <span className="mb-1.5 block font-medium">Hero subtitle</span>
           <Textarea

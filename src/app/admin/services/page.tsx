@@ -13,7 +13,7 @@ export default function AdminServicesPage() {
         { key: "description", label: "Short description", type: "textarea" },
         { key: "longDescription", label: "Full description", type: "textarea" },
         { key: "icon", label: "Icon key (e.g. Wrench)" },
-        { key: "image", label: "Image URL" },
+        { key: "image", label: "Image", type: "image" },
         { key: "benefitsText", label: "Benefits", type: "list", hint: "One benefit per line" },
         { key: "featured", label: "Featured", type: "checkbox" },
         { key: "published", label: "Published", type: "checkbox" },

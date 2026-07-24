@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageField } from "@/features/admin/image-field";
 
 export type VehicleFormValues = {
   name: string;
@@ -263,57 +264,34 @@ export function VehicleForm({
             size="sm"
             onClick={() => update("images", [...values.images, ""])}
           >
-            Add image URL
+            Add image
           </Button>
         </div>
         <p className="mt-1 text-sm text-muted">
-          Paste image URLs (or upload in Media and paste the `/uploads/...` path).
+          Use an image URL or upload a file for each gallery slot.
         </p>
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-4">
           {imageList.map((image, index) => (
-            <div key={index} className="flex gap-2">
-              <Input
+            <div key={index} className="space-y-2">
+              <ImageField
+                label={`Image ${index + 1}`}
                 value={image}
-                placeholder="https://... or /uploads/photo.jpg"
-                onChange={(e) => {
+                onChange={(value) => {
                   const next = [...values.images];
-                  next[index] = e.target.value;
+                  next[index] = value;
                   update("images", next);
                 }}
               />
               <Button
                 type="button"
                 variant="ghost"
+                size="sm"
                 onClick={() => update("images", values.images.filter((_, i) => i !== index))}
               >
-                Remove
+                Remove image
               </Button>
             </div>
           ))}
-        </div>
-        <div className="mt-4">
-          <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-accent">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={async (event) => {
-                const file = event.target.files?.[0];
-                if (!file) return;
-                const body = new FormData();
-                body.append("file", file);
-                const response = await fetch("/api/admin/media", { method: "POST", body });
-                const data = await response.json();
-                if (!response.ok) {
-                  toast.error(data.message || "Upload failed");
-                  return;
-                }
-                update("images", [...values.images.filter(Boolean), data.url]);
-                toast.success("Image uploaded");
-              }}
-            />
-            Upload image file
-          </label>
         </div>
       </section>
 

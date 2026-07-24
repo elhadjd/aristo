@@ -11,7 +11,7 @@ export default function AdminCategoriesPage() {
       fields={[
         { key: "name", label: "Name" },
         { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL" },
+        { key: "image", label: "Image", type: "image" },
         { key: "sortOrder", label: "Sort order", type: "number" },
       ]}
       mapRow={(row) => ({

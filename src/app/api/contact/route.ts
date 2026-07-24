@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { sendLeadToSisgesc } from "@/lib/sisgesc-contact";
+import { isSisgescContactConfigured, sendLeadToSisgesc } from "@/lib/sisgesc-contact";
 
 const contactSchema = z.object({
   name: z.string().min(2),
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       message: payload.message,
       vehicleId: payload.vehicleId,
       interest: payload.interest,
-      service: payload.service ?? payload.vehicleId,
+      service: payload.service,
       serviceType: payload.serviceType || payload.interest,
       metadata: {
         page_url: request.headers.get("referer") || undefined,
@@ -57,18 +57,27 @@ export async function POST(request: NextRequest) {
     await prisma.contactLead.update({
       where: { id: lead.id },
       data: {
-        sisgescSync: sync.ok ? "synced" : "failed",
+        sisgescSync: sync.ok ? "synced" : sync.configured === false ? "unconfigured" : "failed",
         sisgescRef: sync.reference || sync.error || "",
       },
     });
 
-    if (!sync.ok && process.env.SISGESC_CONTACT_REQUIRED === "true") {
+    const required = process.env.SISGESC_CONTACT_REQUIRED === "true";
+    if (!sync.ok && required) {
       return NextResponse.json(
         {
           message: "Unable to reach SISGESC contact API",
           detail: sync.error,
+          id: lead.id,
         },
         { status: sync.status === 422 ? 422 : 502 },
+      );
+    }
+
+    if (!sync.ok) {
+      console.warn(
+        `[ARISTO] Contact saved locally (${lead.id}) but SISGESC sync failed:`,
+        sync.error,
       );
     }
 
@@ -76,8 +85,14 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         id: lead.id,
-        sisgesc: sync.ok ? "synced" : "queued_locally",
+        sisgesc: sync.ok
+          ? "synced"
+          : sync.configured === false
+            ? "not_configured"
+            : "failed",
         sisgescRef: sync.reference,
+        sisgescError: sync.ok ? undefined : sync.error,
+        sisgescConfigured: isSisgescContactConfigured(),
       },
       { status: 201 },
     );
