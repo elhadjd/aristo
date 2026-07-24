@@ -40,9 +40,9 @@ Default admin (from seed):
 | `DATABASE_URL` | SQLite path, e.g. `file:./prisma/dev.db` |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Seed admin credentials |
 | `JWT_SECRET` | Admin session signing secret |
-| `SISGESC_CONTACT_URL` | Full SISGESC contact endpoint (preferred) |
-| `SISGESC_API_URL` | SISGESC host fallback for `{host}/api/site/contact` |
+| `SISGESC_API_URL` | SISGESC host (uses `POST /api/site/contacts/submit`) |
 | `SISGESC_SITE_API_KEY` | Site API `key` for contact sync |
+| `SISGESC_CONTACT_URL` | Optional full endpoint override |
 | `SISGESC_CONTACT_REQUIRED` | If `true`, forms fail when SISGESC is down |
 
 ## Scripts
@@ -71,6 +71,12 @@ src/
 
 ## SISGESC scope
 
-Used only for **contact / trade-in / financing form leads**.
+Used only for **contact / trade-in / financing form leads** via:
+
+```http
+POST {SISGESC_API_URL}/api/site/contacts/submit?key={SISGESC_SITE_API_KEY}
+```
+
+Required: `name`, `email`, `phone` · Success: **HTTP 201**
 
 Inventory, galleries, services, articles, FAQ, testimonials, and settings are fully configurable in Admin.
