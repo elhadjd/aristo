@@ -14,8 +14,16 @@ const sisgescHosts = [
   hostnameFrom(process.env.SISGESC_MEDIA_URL),
 ].filter((host): host is string => Boolean(host));
 
+/**
+ * Many custom hosts (incl. reverse proxies) break Next.js `/_next/image`.
+ * Default to unoptimized so remote Unsplash + local `/uploads` load as normal `<img>`.
+ * Set NEXT_IMAGE_UNOPTIMIZED=false on platforms that fully support the optimizer (e.g. Vercel).
+ */
+const imageUnoptimized = process.env.NEXT_IMAGE_UNOPTIMIZED !== "false";
+
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: imageUnoptimized,
     localPatterns: [
       {
         pathname: "/uploads/**",
@@ -28,11 +36,27 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "**.unsplash.com",
+      },
+      {
+        protocol: "https",
         hostname: "**.sisgesc.com",
       },
       {
         protocol: "http",
         hostname: "**.sisgesc.com",
+      },
+      {
+        protocol: "https",
+        hostname: "aristo.zyvoerp.com",
+      },
+      {
+        protocol: "http",
+        hostname: "aristo.zyvoerp.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.zyvoerp.com",
       },
       ...sisgescHosts.flatMap((hostname) => [
         { protocol: "https" as const, hostname },
