@@ -33,16 +33,21 @@ http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 http.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ message?: string }>) => {
+  (error: AxiosError<{ message?: string; detail?: string; sisgescError?: string }>) => {
+    const data = error.response?.data;
     const message =
-      error.response?.data?.message ||
+      data?.message ||
+      data?.detail ||
+      data?.sisgescError ||
       error.message ||
       "Something went wrong. Please try again.";
 
     return Promise.reject({
       message,
+      detail: data?.detail || data?.sisgescError,
       status: error.response?.status,
       code: error.code,
+      data,
     });
   },
 );

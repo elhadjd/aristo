@@ -44,12 +44,17 @@ export function TradeInForm() {
       className="space-y-4"
       onSubmit={handleSubmit(async (values) => {
         try {
-          await submitTradeIn(values);
-          toast.success("Trade-in request received. We'll follow up with an appraisal.");
+          const result = await submitTradeIn(values);
+          toast.success(
+            result.message || "Trade-in request received. We'll follow up with an appraisal.",
+          );
           reset();
         } catch (error) {
-          const err = error as { message?: string };
+          const err = error as { message?: string; detail?: string };
           toast.error(err.message || "Unable to submit trade-in");
+          if (err.detail && err.detail !== err.message) {
+            toast.message(err.detail);
+          }
         }
       })}
       noValidate
