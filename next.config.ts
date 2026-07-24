@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
-  serverExternalPackages: ["better-sqlite3", "@prisma/adapter-better-sqlite3"],
+  serverExternalPackages: ["@libsql/client", "@prisma/adapter-libsql"],
   poweredByHeader: false,
   compress: true,
   reactStrictMode: true,
