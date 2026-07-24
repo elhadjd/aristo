@@ -9,7 +9,7 @@ function resolveDatabaseUrl() {
   if (!raw.startsWith("file:")) return raw;
   const filePath = raw.replace(/^file:/, "");
   if (path.isAbsolute(filePath)) return `file:${filePath}`;
-  return `file:${path.join(process.cwd(), filePath)}`;
+  return `file:${path.join(/* turbopackIgnore: true */ process.cwd(), filePath)}`;
 }
 
 function createPrismaClient() {
