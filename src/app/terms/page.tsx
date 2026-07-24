@@ -1,13 +1,9 @@
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { siteConfig } from "@/config/site";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Terms of Service",
-  description: "Terms of service for using the ARISTO dealership website.",
-  path: "/terms",
-});
+export const metadata = pageMetadata("terms");
 
 export default function TermsPage() {
   return (

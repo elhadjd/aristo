@@ -3,7 +3,7 @@ export const siteConfig = {
   legalName: "ARISTO Auto Group",
   tagline: "Premium vehicles. Exceptional ownership.",
   description:
-    "ARISTO is a luxury automotive dealership in Columbus, Ohio offering curated inventory, transparent financing, trade-ins, and concierge delivery.",
+    "ARISTO is a premium used and luxury car dealership in Columbus, Ohio. Shop curated inventory, financing, trade-ins, and schedule a test drive at 3431 Westerville Rd.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   phone: "+1 (614) 592-0280",
   phoneHref: "tel:+16145920280",

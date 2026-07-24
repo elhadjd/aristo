@@ -55,13 +55,24 @@ Admin image fields accept a **URL** or a **file upload** (stored under `/public/
 ## Scripts
 
 ```bash
-npm run dev        # development
-npm run build      # prisma generate + production build
-npm run start      # production server
-npm run db:setup   # create DB schema + seed demo content/admin
-npm run db:seed    # re-seed
+npm run dev          # development
+npm run seo:sitemap  # regenerate public/sitemap.xml
+npm run build        # prisma generate + sitemap + production build
+npm run start        # production server
+npm run db:setup     # create DB schema + seed demo content/admin
+npm run db:seed      # re-seed
 npm run lint
 ```
+
+## SEO
+
+- Per-page titles, meta descriptions, and high-intent keywords (`src/config/seo.ts`)
+- Canonical URLs, Open Graph, Twitter cards, geo meta tags
+- Structured data: AutoDealer, WebSite/SearchAction, Car, FAQPage, Article, BreadcrumbList
+- `robots.txt` allows search engines and blocks `/admin` + `/api`
+- `npm run build` always regenerates `public/sitemap.xml` (and Next.js `/sitemap.xml`)
+
+Set `NEXT_PUBLIC_SITE_URL` to your production domain before deploying so canonicals and the sitemap use the correct host.
 
 ## Architecture
 

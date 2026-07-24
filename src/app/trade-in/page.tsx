@@ -1,21 +1,16 @@
 import { TradeInForm } from "@/features/trade-in/trade-in-form";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Trade-In",
-  description:
-    "Get a fair trade-in appraisal from ARISTO and apply equity toward your next vehicle.",
-  path: "/trade-in",
-});
+export const metadata = pageMetadata("tradeIn");
 
 export default function TradeInPage() {
   return (
     <>
       <PageHero
-        title="Trade-In"
-        description="Unlock equity with a complimentary appraisal and a streamlined upgrade path."
+        title="Trade In Your Car in Columbus, OH"
+        description="Get a fair trade-in appraisal at ARISTO, unlock equity, and apply value toward your next used or luxury vehicle."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Trade-In" }]} />
