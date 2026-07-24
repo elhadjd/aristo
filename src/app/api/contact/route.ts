@@ -6,13 +6,16 @@ import { sendLeadToSisgesc } from "@/lib/sisgesc-contact";
 const contactSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  phone: z.string().optional(),
+  phone: z.string().min(7).max(20),
   subject: z.string().optional(),
-  message: z.string().min(10),
+  message: z.string().optional(),
   vehicleId: z.string().optional(),
   interest: z
     .enum(["purchase", "financing", "trade-in", "service", "general"])
     .optional(),
+  service: z.union([z.string(), z.number()]).optional(),
+  serviceType: z.string().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -24,9 +27,9 @@ export async function POST(request: NextRequest) {
       data: {
         name: payload.name,
         email: payload.email,
-        phone: payload.phone || "",
+        phone: payload.phone,
         subject: payload.subject || "",
-        message: payload.message,
+        message: payload.message || "",
         vehicleId: payload.vehicleId || "",
         interest: payload.interest || "general",
         status: "new",
@@ -34,7 +37,22 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const sync = await sendLeadToSisgesc(payload);
+    const sync = await sendLeadToSisgesc({
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      subject: payload.subject,
+      message: payload.message,
+      vehicleId: payload.vehicleId,
+      interest: payload.interest,
+      service: payload.service ?? payload.vehicleId,
+      serviceType: payload.serviceType || payload.interest,
+      metadata: {
+        page_url: request.headers.get("referer") || undefined,
+        local_lead_id: lead.id,
+        ...(payload.metadata || {}),
+      },
+    });
 
     await prisma.contactLead.update({
       where: { id: lead.id },
@@ -50,20 +68,24 @@ export async function POST(request: NextRequest) {
           message: "Unable to reach SISGESC contact API",
           detail: sync.error,
         },
-        { status: 502 },
+        { status: sync.status === 422 ? 422 : 502 },
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      id: lead.id,
-      sisgesc: sync.ok ? "synced" : "queued_locally",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        id: lead.id,
+        sisgesc: sync.ok ? "synced" : "queued_locally",
+        sisgescRef: sync.reference,
+      },
+      { status: 201 },
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { message: "Invalid form data", errors: error.flatten() },
-        { status: 400 },
+        { status: 422 },
       );
     }
     console.error("[ARISTO] Contact submit failed", error);

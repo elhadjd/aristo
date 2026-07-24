@@ -19,7 +19,7 @@ export const apiConfig = {
 
 export function isSisgescContactConfigured(): boolean {
   return Boolean(
-    process.env.SISGESC_CONTACT_URL ||
+    (process.env.SISGESC_CONTACT_URL && apiConfig.sisgescSiteApiKey) ||
       (apiConfig.sisgescBaseUrl && apiConfig.sisgescSiteApiKey),
   );
 }
