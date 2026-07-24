@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id           String    @id @default(cuid())
+  name         String
+  slug         String    @unique
+  description  String    @default("")
+  image        String    @default("")
+  sortOrder    Int       @default(0)
+  vehicles     Vehicle[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Brand {
+  id           String    @id @default(cuid())
+  name         String    @unique
+  slug         String    @unique
+  logo         String    @default("")
+  vehicles     Vehicle[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Vehicle {
+  id            String   @id @default(cuid())
+  name          String
+  brandId       String?
+  brand         Brand?   @relation(fields: [brandId], references: [id])
+  brandName     String   @default("")
+  model         String
+  year          Int
+  price         Float
+  mileage       Int      @default(0)
+  fuel          String   @default("Gasoline")
+  transmission  String   @default("Automatic")
+  engine        String   @default("")
+  doors         Int      @default(4)
+  color         String   @default("")
+  condition     String   @default("Used")
+  description   String   @default("")
+  bodyStyle     String   @default("Sedan")
+  driveType     String   @default("FWD")
+  vin           String   @default("")
+  mpgCity       Int?
+  mpgHighway    Int?
+  featured      Boolean  @default(false)
+  published     Boolean  @default(true)
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id])
+  images        VehicleImage[]
+  attributes    VehicleAttribute[]
+  features      String   @default("[]")
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model VehicleImage {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String  @default("")
+  sortOrder Int     @default(0)
+}
+
+model VehicleAttribute {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  label     String
+  value     String
+  sortOrder Int     @default(0)
+}
+
+model Service {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String   @default("")
+  longDescription String   @default("")
+  icon            String   @default("Wrench")
+  image           String   @default("")
+  benefits        String   @default("[]")
+  featured        Boolean  @default(true)
+  published       Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Testimonial {
+  id               String   @id @default(cuid())
+  name             String
+  role             String   @default("")
+  rating           Int      @default(5)
+  content          String
+  avatar           String   @default("")
+  vehiclePurchased String   @default("")
+  published        Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model FaqItem {
+  id         String   @id @default(cuid())
+  question   String
+  answer     String
+  published  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String   @default("")
+  content     String   @default("")
+  coverImage  String   @default("")
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSetting {
+  id                 String @id @default("default")
+  companyName        String @default("ARISTO")
+  tagline            String @default("Premium vehicles. Exceptional ownership.")
+  description        String @default("")
+  phone              String @default("+1 (614) 592-0280")
+  whatsapp           String @default("+1 (614) 592-0280")
+  email              String @default("keitaarbaba9@gmail.com")
+  address            String @default("3431 Westerville Rd, Columbus, OH 43224")
+  heroTitle          String @default("Drive Distinction")
+  heroSubtitle       String @default("Curated luxury and performance vehicles with transparent pricing.")
+  heroImage          String @default("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80")
+  financingRateFrom  Float  @default(4.9)
+  mapEmbedUrl        String @default("")
+  hoursJson          String @default("[]")
+  socialJson         String @default("{}")
+  updatedAt          DateTime @updatedAt
+}
+
+model ContactLead {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String   @default("")
+  subject     String   @default("")
+  message     String
+  vehicleId   String   @default("")
+  interest    String   @default("general")
+  status      String   @default("new")
+  sisgescSync String   @default("pending")
+  sisgescRef  String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String   @default("")
+  filename  String   @default("")
+  createdAt DateTime @default(now())
+}
