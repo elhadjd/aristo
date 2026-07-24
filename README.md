@@ -30,11 +30,20 @@ Open [http://localhost:3000](http://localhost:3000).
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL for SEO |
 | `NEXT_PUBLIC_API_URL` | Optional public API base (defaults to same-origin `/api`) |
-| `SISGESC_API_URL` | Upstream SISGESC REST API (optional) |
-| `SISGESC_API_KEY` | Bearer token for SISGESC (optional) |
+| `SISGESC_API_URL` | SISGESC host, e.g. `https://erp.example.com` |
+| `SISGESC_SITE_API_KEY` | Site API key (`key`) — **server-side only** |
+| `SISGESC_COMPANY_ID` | Optional company id for product detail route |
+| `SISGESC_SERVICE_TYPE_IDS` | `product_type_id` values treated as services (default `2`) |
+| `SISGESC_MEDIA_URL` | Optional media host when `image` paths are relative |
 | `JWT_SECRET` | Reserved for future JWT auth |
 
-When `SISGESC_API_URL` is unset, Next.js API routes serve a curated demo catalog so the site remains fully functional.
+When SISGESC is unset, the app serves a curated demo catalog. With host + key set, inventory and services load from:
+
+```http
+GET {SISGESC_API_URL}/api/site/products?key={SISGESC_SITE_API_KEY}
+```
+
+The key is used only in Next.js server code / Route Handlers (never shipped to the browser). Health check: `GET /api/health/sisgesc`.
 
 ## Scripts
 
@@ -65,7 +74,7 @@ src/
   data/          # Demo catalog fallback
 ```
 
-## API endpoints
+## Public BFF endpoints (this site)
 
 - `GET /api/vehicles`
 - `GET /api/vehicles/{id}`
@@ -76,7 +85,19 @@ src/
 - `GET /api/latest`
 - `GET /api/testimonials`
 - `GET /api/brands`
+- `GET /api/health/sisgesc`
 - `POST /api/contact`
+
+## Upstream SISGESC Site API (used server-side)
+
+| Route | Usage |
+| --- | --- |
+| `GET /api/site/products` | Full catalog (products + services) |
+| `GET /api/site/products/{pageSize}` | Paginated shop list |
+| `GET /api/site/searchProducts/{name}` | Name search |
+| `GET /api/site/product/{company}/{product}` | Product detail |
+| `GET /api/site` | Site settings |
+| `GET /api/site/company` | Company settings |
 
 ## Deploy
 
