@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { isSisgescContactConfigured, sendLeadToSisgesc } from "@/lib/sisgesc-contact";
+import {
+  isSisgescContactConfigured,
+  sendLeadToSisgesc,
+  sisgescUserMessage,
+} from "@/lib/sisgesc-contact";
 
 const contactSchema = z.object({
   name: z.string().min(2),
@@ -17,6 +21,13 @@ const contactSchema = z.object({
   serviceType: z.string().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
+
+function syncStatusCode(status?: number) {
+  if (status === 422) return 422;
+  if (status === 401 || status === 403) return 502;
+  if (status === 404) return 502;
+  return 502;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,29 +65,61 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    const sisgescState = sync.ok
+      ? "synced"
+      : sync.configured === false
+        ? "unconfigured"
+        : "failed";
+
     await prisma.contactLead.update({
       where: { id: lead.id },
       data: {
-        sisgescSync: sync.ok ? "synced" : sync.configured === false ? "unconfigured" : "failed",
+        sisgescSync: sisgescState,
         sisgescRef: sync.reference || sync.error || "",
       },
     });
 
-    const required = process.env.SISGESC_CONTACT_REQUIRED === "true";
-    if (!sync.ok && required) {
+    // When SISGESC is configured, a failed sync is a hard error for the visitor.
+    // The lead is still kept locally so Admin can Resync later.
+    if (!sync.ok && sync.configured !== false) {
+      console.error(
+        `[ARISTO] Contact saved locally (${lead.id}) but SISGESC sync failed:`,
+        sync.error,
+      );
       return NextResponse.json(
         {
-          message: "Unable to reach SISGESC contact API",
+          success: false,
+          message: sisgescUserMessage(sync),
           detail: sync.error,
           id: lead.id,
+          sisgesc: "failed",
+          sisgescError: sync.error,
+          sisgescConfigured: true,
+          endpoint: sync.endpoint,
         },
-        { status: sync.status === 422 ? 422 : 502 },
+        { status: syncStatusCode(sync.status) },
+      );
+    }
+
+    // Not configured: only fail if explicitly required.
+    if (!sync.ok && process.env.SISGESC_CONTACT_REQUIRED === "true") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: sisgescUserMessage(sync),
+          detail: sync.error,
+          id: lead.id,
+          sisgesc: "not_configured",
+          sisgescError: sync.error,
+          sisgescConfigured: false,
+        },
+        { status: 503 },
       );
     }
 
     if (!sync.ok) {
       console.warn(
-        `[ARISTO] Contact saved locally (${lead.id}) but SISGESC sync failed:`,
+        `[ARISTO] Contact saved locally (${lead.id}) without SISGESC:`,
         sync.error,
       );
     }
@@ -84,14 +127,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
+        message: "Message sent. Our team will respond shortly.",
         id: lead.id,
-        sisgesc: sync.ok
-          ? "synced"
-          : sync.configured === false
-            ? "not_configured"
-            : "failed",
+        sisgesc: sync.ok ? "synced" : "not_configured",
         sisgescRef: sync.reference,
-        sisgescError: sync.ok ? undefined : sync.error,
         sisgescConfigured: isSisgescContactConfigured(),
       },
       { status: 201 },
@@ -99,11 +138,18 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: "Invalid form data", errors: error.flatten() },
+        {
+          success: false,
+          message: "Invalid form data. Please check the highlighted fields.",
+          errors: error.flatten(),
+        },
         { status: 422 },
       );
     }
     console.error("[ARISTO] Contact submit failed", error);
-    return NextResponse.json({ message: "Unable to submit request" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Unable to submit request. Please try again." },
+      { status: 500 },
+    );
   }
 }

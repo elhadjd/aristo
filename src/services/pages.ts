@@ -1,13 +1,29 @@
 import type { ContactPayload, TradeInPayload } from "@/types/common";
 import { http } from "./http";
 
+export type ContactSubmitResult = {
+  success: boolean;
+  id?: string;
+  message?: string;
+  sisgesc?: string;
+  sisgescError?: string;
+  detail?: string;
+};
+
 export async function submitContact(payload: ContactPayload) {
-  const { data } = await http.post<{ success: boolean; id?: string }>("/contact", payload);
+  const { data } = await http.post<ContactSubmitResult>("/contact", payload);
+  if (!data?.success) {
+    throw {
+      message: data?.message || data?.detail || data?.sisgescError || "Unable to send message",
+      detail: data?.detail || data?.sisgescError,
+      data,
+    };
+  }
   return data;
 }
 
 export async function submitTradeIn(payload: TradeInPayload) {
-  const { data } = await http.post<{ success: boolean; id?: string }>("/contact", {
+  return submitContact({
     name: payload.name,
     email: payload.email,
     phone: payload.phone,
@@ -25,5 +41,4 @@ export async function submitTradeIn(payload: TradeInPayload) {
       notes: payload.notes || "",
     },
   });
-  return data;
 }
