@@ -25,6 +25,8 @@ npm run db:setup
 npm run dev
 ```
 
+> **Windows note:** The app uses **LibSQL** (no native compile). You do **not** need Python or Visual Studio Build Tools for `npm install`.
+
 - Website: [http://localhost:3000](http://localhost:3000)
 - Admin: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
