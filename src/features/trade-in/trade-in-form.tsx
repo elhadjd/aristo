@@ -14,10 +14,10 @@ const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(7),
-  year: z.coerce.number().min(1990).max(new Date().getFullYear() + 1),
+  year: z.number().min(1990).max(new Date().getFullYear() + 1),
   make: z.string().min(1),
   model: z.string().min(1),
-  mileage: z.coerce.number().min(0),
+  mileage: z.number().min(0),
   condition: z.string().min(1),
   notes: z.string().optional(),
 });
@@ -32,7 +32,11 @@ export function TradeInForm() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { condition: "Good", year: new Date().getFullYear() - 3 },
+    defaultValues: {
+      condition: "Good",
+      year: new Date().getFullYear() - 3,
+      mileage: 0,
+    },
   });
 
   return (
@@ -63,7 +67,7 @@ export function TradeInForm() {
       </Field>
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Year" error={errors.year?.message}>
-          <Input type="number" {...register("year")} />
+          <Input type="number" {...register("year", { valueAsNumber: true })} />
         </Field>
         <Field label="Make" error={errors.make?.message}>
           <Input {...register("make")} />
@@ -74,7 +78,7 @@ export function TradeInForm() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Mileage" error={errors.mileage?.message}>
-          <Input type="number" {...register("mileage")} />
+          <Input type="number" {...register("mileage", { valueAsNumber: true })} />
         </Field>
         <Field label="Condition" error={errors.condition?.message}>
           <Select {...register("condition")}>

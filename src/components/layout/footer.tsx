@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
+import { Globe, Mail, MapPin, Phone, Share2, Video } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { footerNav } from "@/constants/navigation";
 import { NewsletterForm } from "@/features/contact/newsletter-form";
@@ -34,21 +34,21 @@ export function Footer() {
               aria-label="Facebook"
               className="rounded-xl bg-white/5 p-2 hover:bg-white/10"
             >
-              <Facebook className="h-4 w-4" />
+              <Globe className="h-4 w-4" />
             </a>
             <a
               href={siteConfig.social.instagram}
               aria-label="Instagram"
               className="rounded-xl bg-white/5 p-2 hover:bg-white/10"
             >
-              <Instagram className="h-4 w-4" />
+              <Share2 className="h-4 w-4" />
             </a>
             <a
               href={siteConfig.social.youtube}
               aria-label="YouTube"
               className="rounded-xl bg-white/5 p-2 hover:bg-white/10"
             >
-              <Youtube className="h-4 w-4" />
+              <Video className="h-4 w-4" />
             </a>
           </div>
         </div>
