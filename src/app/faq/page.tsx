@@ -1,26 +1,24 @@
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
 import { faqItems } from "@/constants/faq";
 import { listFaq } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "FAQ",
-  description: "Answers to common questions about buying, financing, trade-ins, and delivery at ARISTO.",
-  path: "/faq",
-});
+export const metadata = pageMetadata("faq");
 
 export default async function FaqPage() {
   const dbFaq = await listFaq();
   const items = dbFaq.length
     ? dbFaq.map((item) => ({ question: item.question, answer: item.answer }))
-    : faqItems;
+    : faqItems.map((item) => ({ question: item.question, answer: item.answer }));
 
   return (
     <>
+      <JsonLd data={faqJsonLd(items)} />
       <PageHero
         title="FAQ"
-        description="Everything you need to know before your next visit or purchase."
+        description="Answers about buying used and luxury cars, financing, trade-ins, warranties, and test drives at ARISTO in Columbus, Ohio."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />

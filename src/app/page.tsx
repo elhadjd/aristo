@@ -19,14 +19,9 @@ import {
   listServices,
   listTestimonials,
 } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "ARISTO",
-  description:
-    "Premium automotive dealership in Columbus, OH. Browse curated inventory, financing, trade-ins, and concierge delivery.",
-  path: "/",
-});
+export const metadata = pageMetadata("home");
 
 export default async function HomePage() {
   const [settings, featured, latest, categories, services, testimonials, brands] =

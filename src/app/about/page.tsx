@@ -3,14 +3,9 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { StatsSection } from "@/features/home/stats";
 import { siteConfig } from "@/config/site";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "About",
-  description:
-    "Learn about ARISTO—a premium Columbus dealership focused on curated inventory and elevated ownership.",
-  path: "/about",
-});
+export const metadata = pageMetadata("about");
 
 export default function AboutPage() {
   return (

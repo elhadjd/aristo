@@ -4,22 +4,17 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { siteConfig } from "@/config/site";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/utils/cn";
 
-export const metadata = buildMetadata({
-  title: "Contact",
-  description:
-    "Contact ARISTO in Columbus, OH—call, WhatsApp, email, or visit 3431 Westerville Rd.",
-  path: "/contact",
-});
+export const metadata = pageMetadata("contact");
 
 export default function ContactPage() {
   return (
     <>
       <PageHero
-        title="Contact"
-        description="Speak with sales, schedule a test drive, or plan a showroom visit."
+        title="Contact ARISTO in Columbus, OH"
+        description="Call, WhatsApp, email, or visit 3431 Westerville Rd to speak with sales, schedule a test drive, or ask about financing."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />

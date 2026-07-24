@@ -8,15 +8,10 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { PageHero } from "@/components/shared/page-hero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listBrands, listVehicles } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import type { VehicleFilters, VehicleSortOption } from "@/types/vehicle";
 
-export const metadata = buildMetadata({
-  title: "Inventory",
-  description:
-    "Browse ARISTO's curated inventory of luxury, performance, and everyday premium vehicles in Columbus, Ohio.",
-  path: "/inventory",
-});
+export const metadata = pageMetadata("inventory");
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -56,8 +51,8 @@ export default async function InventoryPage({ searchParams }: { searchParams: Se
   return (
     <>
       <PageHero
-        title="Inventory"
-        description="Advanced filters, transparent pricing, and vehicles synchronized from SISGESC."
+        title="Used & Luxury Cars for Sale"
+        description="Shop curated used cars, SUVs, and luxury vehicles for sale in Columbus, Ohio — transparent pricing, financing, and test drives at ARISTO."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Inventory" }]} />

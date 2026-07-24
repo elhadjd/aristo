@@ -2,13 +2,9 @@ import { TestimonialsSection } from "@/features/home/testimonials";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { listTestimonials } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Testimonials",
-  description: "Read client stories from ARISTO buyers across Columbus and Central Ohio.",
-  path: "/testimonials",
-});
+export const metadata = pageMetadata("testimonials");
 
 export default async function TestimonialsPage() {
   const testimonials = await listTestimonials();

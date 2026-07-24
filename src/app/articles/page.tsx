@@ -3,13 +3,9 @@ import Link from "next/link";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { listArticles } from "@/lib/data";
-import { buildMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Articles",
-  description: "News and insights from ARISTO.",
-  path: "/articles",
-});
+export const metadata = pageMetadata("articles");
 
 export default async function ArticlesPage() {
   const articles = await listArticles(true);
