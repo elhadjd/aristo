@@ -23,6 +23,15 @@ export type SisgescLeadPayload = {
   metadata?: Record<string, unknown>;
 };
 
+export type SisgescSyncResult = {
+  ok: boolean;
+  reference?: string;
+  error?: string;
+  status?: number;
+  configured?: boolean;
+  endpoint?: string;
+};
+
 function getSisgescEnv() {
   // Read at call-time so Next.js / dotenv values are never stale across hot reloads.
   const baseUrl = (process.env.SISGESC_API_URL || "").trim().replace(/\/$/, "");
@@ -40,10 +49,15 @@ export function isSisgescContactConfigured(): boolean {
   return Boolean(key && (contactUrl || baseUrl));
 }
 
-function getContactEndpoint() {
+export function getContactEndpoint() {
   const { baseUrl, contactUrl } = getSisgescEnv();
-  if (contactUrl) return contactUrl;
+  if (contactUrl) return contactUrl.replace(/\/$/, "");
   if (!baseUrl) return "";
+
+  // Allow pasting a full submit URL into SISGESC_API_URL by mistake.
+  if (/\/contacts\/submit$/i.test(baseUrl)) return baseUrl;
+  if (/\/api\/site$/i.test(baseUrl)) return `${baseUrl}/contacts/submit`;
+  if (/\/api$/i.test(baseUrl)) return `${baseUrl}/site/contacts/submit`;
   return `${baseUrl}/api/site/contacts/submit`;
 }
 
@@ -60,18 +74,33 @@ function resolveServiceField(
   return undefined;
 }
 
+function describeHttpError(status: number, message?: string, endpoint?: string): string {
+  if (status === 404) {
+    return (
+      message ||
+      `SISGESC endpoint not found (404). Check SISGESC_API_URL / SISGESC_CONTACT_URL${
+        endpoint ? ` → ${endpoint}` : ""
+      }`
+    );
+  }
+  if (status === 401 || status === 403) {
+    return message || "Unauthorized (invalid SISGESC site key)";
+  }
+  if (status === 422) {
+    return message || "SISGESC rejected the contact data (validation failed)";
+  }
+  if (status >= 500) {
+    return message || `SISGESC server error (${status})`;
+  }
+  return message || `SISGESC contact failed (${status})`;
+}
+
 /**
  * POST /api/site/contacts/submit
  * Auth: site API `key` (query recommended + header).
  * Success: HTTP 201
  */
-export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<{
-  ok: boolean;
-  reference?: string;
-  error?: string;
-  status?: number;
-  configured?: boolean;
-}> {
+export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<SisgescSyncResult> {
   const endpoint = getContactEndpoint();
   const { key } = getSisgescEnv();
 
@@ -80,7 +109,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<{
       ? "SISGESC contact endpoint not configured (set SISGESC_API_URL or SISGESC_CONTACT_URL)"
       : "SISGESC site API key not configured (set SISGESC_SITE_API_KEY)";
     console.warn("[ARISTO] SISGESC contact sync skipped:", error);
-    return { ok: false, configured: false, error };
+    return { ok: false, configured: false, error, endpoint: endpoint || undefined };
   }
 
   const service = resolveServiceField(payload.service, payload.vehicleId);
@@ -118,6 +147,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<{
     return {
       ok: false,
       configured: true,
+      endpoint,
       error: `Invalid SISGESC contact URL: ${endpoint}`,
     };
   }
@@ -143,15 +173,10 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<{
       return {
         ok: true,
         configured: true,
+        endpoint,
         reference: String(data.contact?.id || `sisgesc_${Date.now()}`),
         status: response.status,
       };
-    }
-
-    if (response.status === 403) {
-      const error = data.message || "Unauthorized (invalid site key)";
-      console.error("[ARISTO] SISGESC contact sync failed:", error);
-      return { ok: false, configured: true, status: 403, error };
     }
 
     if (response.status === 422) {
@@ -160,31 +185,57 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<{
             .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
             .join("; ")
         : data.message;
-      const error = details || "Validation failed";
-      console.error("[ARISTO] SISGESC contact validation failed:", error, body);
+      const error = describeHttpError(422, details || undefined, endpoint);
+      console.error("[ARISTO] SISGESC contact validation failed:", error, {
+        endpoint,
+        body,
+      });
       return {
         ok: false,
         configured: true,
+        endpoint,
         status: 422,
         error,
       };
     }
 
-    const error = data.message || `SISGESC contact failed (${response.status})`;
-    console.error("[ARISTO] SISGESC contact sync failed:", error);
+    const error = describeHttpError(response.status, data.message, endpoint);
+    console.error("[ARISTO] SISGESC contact sync failed:", error, {
+      status: response.status,
+      endpoint,
+    });
     return {
       ok: false,
       configured: true,
+      endpoint,
       status: response.status,
       error,
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : "SISGESC contact request failed";
-    console.error("[ARISTO] SISGESC contact request error:", message);
+    console.error("[ARISTO] SISGESC contact request error:", message, { endpoint });
     return {
       ok: false,
       configured: true,
+      endpoint,
       error: message,
     };
   }
+}
+
+export function sisgescUserMessage(sync: SisgescSyncResult): string {
+  if (sync.ok) return "Message sent successfully.";
+  if (sync.configured === false) {
+    return "Contact service is not configured. Please try again later or call us directly.";
+  }
+  if (sync.status === 404) {
+    return "Unable to deliver your message to our CRM (endpoint not found). Please try again later or call us.";
+  }
+  if (sync.status === 401 || sync.status === 403) {
+    return "Unable to deliver your message to our CRM (authorization failed). Please try again later or call us.";
+  }
+  if (sync.status === 422) {
+    return sync.error || "Some of your details were rejected. Please check the form and try again.";
+  }
+  return "Unable to deliver your message right now. Please try again later or call us directly.";
 }

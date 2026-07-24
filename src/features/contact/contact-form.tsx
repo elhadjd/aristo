@@ -48,7 +48,7 @@ export function ContactForm({
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await submitContact({
+      const result = await submitContact({
         ...values,
         service: values.vehicleId,
         serviceType: values.interest,
@@ -57,7 +57,7 @@ export function ContactForm({
           vehicleId: values.vehicleId,
         },
       });
-      toast.success("Message sent. Our team will respond shortly.");
+      toast.success(result.message || "Message sent. Our team will respond shortly.");
       reset({
         interest: defaultInterest,
         vehicleId,
@@ -68,8 +68,11 @@ export function ContactForm({
         subject: vehicleId ? "Vehicle inquiry" : "",
       });
     } catch (error) {
-      const err = error as { message?: string };
+      const err = error as { message?: string; detail?: string };
       toast.error(err.message || "Unable to send message");
+      if (err.detail && err.detail !== err.message) {
+        toast.message(err.detail);
+      }
     }
   };
 

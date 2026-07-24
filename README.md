@@ -48,7 +48,7 @@ Default admin (from seed):
 | `SISGESC_API_URL` | SISGESC host (uses `POST /api/site/contacts/submit`) — **required** for external lead sync |
 | `SISGESC_SITE_API_KEY` | Site API `key` for contact sync — **required** for external lead sync |
 | `SISGESC_CONTACT_URL` | Optional full endpoint override |
-| `SISGESC_CONTACT_REQUIRED` | If `true`, forms fail when SISGESC is down / not configured |
+| `SISGESC_CONTACT_REQUIRED` | If `true`, forms also fail when SISGESC env vars are missing (configured sync failures always fail) |
 
 Admin image fields accept a **URL** or a **file upload** (stored under `/public/uploads`).
 
