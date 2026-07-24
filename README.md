@@ -74,6 +74,10 @@ npm run lint
 
 Set `NEXT_PUBLIC_SITE_URL` to your production domain before deploying so canonicals and the sitemap use the correct host.
 
+### Images on custom hosts
+
+By default the app serves images **without** `/_next/image` optimization (`NEXT_IMAGE_UNOPTIMIZED` defaults on). This avoids broken vehicle photos when the host/proxy returns 404 for the optimizer. On Vercel you can set `NEXT_IMAGE_UNOPTIMIZED=false`.
+
 ## Architecture
 
 ```
