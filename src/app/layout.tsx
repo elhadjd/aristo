@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import Script from "next/script";
 import { SiteShell } from "@/components/layout/site-shell";
 import { JsonLd } from "@/components/seo/json-ld";
 import { defaultKeywords } from "@/config/seo";
@@ -54,6 +55,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col antialiased">
+        <Script id="aristo-theme-init" strategy="beforeInteractive">
+          {`(function(){try{var t=localStorage.getItem("aristo-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark");document.documentElement.style.colorScheme=t;}catch(e){}})();`}
+        </Script>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <SiteShell>{children}</SiteShell>
       </body>

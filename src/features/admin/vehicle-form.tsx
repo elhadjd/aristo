@@ -127,7 +127,7 @@ export function VehicleForm({
         }
       }}
     >
-      <section className="grid gap-4 rounded-2xl border border-border bg-white p-5 shadow-soft md:grid-cols-2">
+      <section className="grid gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft md:grid-cols-2">
         <Field label="Display name">
           <Input value={values.name} onChange={(e) => update("name", e.target.value)} required />
         </Field>
@@ -245,7 +245,7 @@ export function VehicleForm({
         </Field>
       </section>
 
-      <section className="rounded-2xl border border-border bg-white p-5 shadow-soft">
+      <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
         <h2 className="font-display text-2xl">Description</h2>
         <Textarea
           className="mt-3"
@@ -255,7 +255,7 @@ export function VehicleForm({
         />
       </section>
 
-      <section className="rounded-2xl border border-border bg-white p-5 shadow-soft">
+      <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-display text-2xl">Gallery images</h2>
           <Button
@@ -296,7 +296,7 @@ export function VehicleForm({
       </section>
 
       <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
           <h2 className="font-display text-2xl">Features</h2>
           <p className="mt-1 text-sm text-muted">One feature per line.</p>
           <Textarea
@@ -306,7 +306,7 @@ export function VehicleForm({
             onChange={(e) => setFeaturesText(e.target.value)}
           />
         </div>
-        <div className="rounded-2xl border border-border bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl">Attributes</h2>
             <Button
@@ -359,7 +359,7 @@ export function VehicleForm({
         </div>
       </section>
 
-      <section className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-white p-5 shadow-soft">
+      <section className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
         <label className="inline-flex items-center gap-2 text-sm">
           <input
             type="checkbox"

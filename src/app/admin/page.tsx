@@ -52,7 +52,7 @@ export default function AdminDashboardPage() {
           <Link
             key={card.label}
             href={card.href}
-            className="rounded-2xl border border-border bg-white p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift"
+            className="rounded-2xl border border-border bg-card p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift"
           >
             <p className="text-sm text-muted">{card.label}</p>
             <p className="mt-2 font-display text-4xl">{card.value}</p>

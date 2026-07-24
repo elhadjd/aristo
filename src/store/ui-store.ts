@@ -18,6 +18,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   setTheme: (theme) => {
     if (typeof document !== "undefined") {
       document.documentElement.classList.toggle("dark", theme === "dark");
+      document.documentElement.style.colorScheme = theme;
       window.localStorage.setItem("aristo-theme", theme);
     }
     set({ theme });
