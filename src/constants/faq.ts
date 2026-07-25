@@ -2,7 +2,7 @@ export const faqItems = [
   {
     question: "Do you offer financing for all credit profiles?",
     answer:
-      "Yes. ARISTO partners with multiple lenders to structure competitive rates for excellent, fair, and rebuilding credit. Complete our financing form for a personalized estimate.",
+      "Yes. Fellah Express LLC partners with multiple lenders to structure competitive rates for excellent, fair, and rebuilding credit. Complete our financing form for a personalized estimate.",
   },
   {
     question: "Can I trade in my current vehicle?",

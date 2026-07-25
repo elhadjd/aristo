@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Params) {
       ...defaultKeywords,
       ...pageSeo.articles.keywords,
       article.title,
-      "ARISTO blog",
+      "Fellah Express LLC blog",
       "Columbus car buying tips",
     ],
     type: "article",

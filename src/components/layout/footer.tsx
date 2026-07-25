@@ -9,7 +9,7 @@ export function Footer() {
     <footer className="mt-auto border-t border-border bg-[#0f172a] text-white">
       <div className="section-shell grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <p className="font-display text-3xl tracking-[0.2em]">ARISTO</p>
+          <p className="font-display text-2xl tracking-wide sm:text-3xl">{siteConfig.name}</p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
             {siteConfig.tagline} Visit our Columbus showroom for curated inventory, clear financing,
             and concierge ownership support.

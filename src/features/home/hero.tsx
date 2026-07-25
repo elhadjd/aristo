@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Search } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button-variants";
+import { siteConfig } from "@/config/site";
 import { VehicleSearch } from "@/features/inventory/vehicle-search";
 import { cn } from "@/utils/cn";
 
@@ -23,7 +24,7 @@ export function HomeHero({
     <section className="relative min-h-[100svh] overflow-hidden">
       <Image
         src={image}
-        alt="ARISTO luxury dealership showroom atmosphere"
+        alt={`${siteConfig.name} luxury dealership showroom atmosphere`}
         fill
         priority
         sizes="100vw"
@@ -43,8 +44,8 @@ export function HomeHero({
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-3xl"
         >
-          <p className="font-display text-4xl tracking-[0.28em] text-white sm:text-5xl md:text-6xl">
-            ARISTO
+          <p className="font-display text-3xl tracking-wide text-white sm:text-5xl md:text-6xl">
+            {siteConfig.name}
           </p>
           <h1 className="mt-5 max-w-2xl font-display text-4xl leading-[1.05] text-white sm:text-5xl md:text-6xl">
             {title}

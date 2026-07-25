@@ -146,7 +146,7 @@ model Article {
 
 model SiteSetting {
   id                 String @id @default("default")
-  companyName        String @default("ARISTO")
+  companyName        String @default("Fellah Express LLC")
   tagline            String @default("Premium vehicles. Exceptional ownership.")
   description        String @default("")
   phone              String @default("+1 (614) 592-0280")

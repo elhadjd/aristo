@@ -282,7 +282,7 @@ export function vehicleSeoDescription(vehicle: {
   mileage: number;
   description?: string;
 }) {
-  const base = `${vehicle.year} ${vehicle.brand} ${vehicle.model} for sale at ARISTO in Columbus, Ohio.`;
+  const base = `${vehicle.year} ${vehicle.brand} ${vehicle.model} for sale at Fellah Express LLC in Columbus, Ohio.`;
   const details = `Mileage ${vehicle.mileage.toLocaleString("en-US")} mi. Transparent pricing and financing available.`;
   const custom = vehicle.description?.trim();
   if (custom && custom.length >= 80) {

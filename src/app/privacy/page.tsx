@@ -8,12 +8,12 @@ export const metadata = pageMetadata("privacy");
 export default function PrivacyPage() {
   return (
     <>
-      <PageHero title="Privacy Policy" description="How ARISTO collects and protects your information." />
+      <PageHero title="Privacy Policy" description="How Fellah Express LLC collects and protects your information." />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Privacy Policy" }]} />
         <article className="prose-sm max-w-3xl space-y-5 text-muted">
           <p>
-            {siteConfig.legalName} (“ARISTO”, “we”, “us”) respects your privacy. This policy explains
+            {siteConfig.legalName} (“Fellah Express LLC”, “we”, “us”) respects your privacy. This policy explains
             how we collect, use, and safeguard information when you use our website or contact our
             dealership.
           </p>

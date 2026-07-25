@@ -39,7 +39,7 @@ export default function AdminDashboardPage() {
         <div>
           <h1 className="font-display text-4xl">Dashboard</h1>
           <p className="mt-2 text-sm text-muted">
-            Full control of everything visitors see on the ARISTO website.
+            Full control of everything visitors see on the Fellah Express LLC website.
           </p>
         </div>
         <Link href="/admin/vehicles/new" className={cn(buttonVariants({ variant: "secondary" }))}>

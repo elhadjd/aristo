@@ -88,7 +88,7 @@ export const mockServices: DealershipService[] = [
     slug: "vehicle-import",
     description: "Source rare inventory across markets.",
     longDescription:
-      "Looking for a specific configuration? ARISTO can coordinate sourcing and import logistics for qualified clients seeking exclusive vehicles.",
+      "Looking for a specific configuration? Fellah Express LLC can coordinate sourcing and import logistics for qualified clients seeking exclusive vehicles.",
     icon: "Ship",
     image: img("photo-1492144534655-ae79c964c9d7"),
     benefits: ["Global sourcing", "Compliance support", "Concierge updates"],
@@ -163,7 +163,7 @@ export const mockTestimonials: Testimonial[] = [
     role: "Columbus, OH",
     rating: 5,
     content:
-      "ARISTO made the entire process feel elevated. Transparent pricing, a pristine vehicle, and a team that actually listened.",
+      "Fellah Express LLC made the entire process feel elevated. Transparent pricing, a pristine vehicle, and a team that actually listened.",
     vehiclePurchased: "2024 Mercedes-Benz GLE 450",
     created_at: "2026-05-12T10:00:00.000Z",
   },
