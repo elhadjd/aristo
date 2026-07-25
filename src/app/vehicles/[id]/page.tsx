@@ -112,7 +112,7 @@ export default async function VehicleDetailsPage({ params }: Params) {
                 Call
               </a>
               <a
-                href={`${siteConfig.whatsappHref}?text=${encodeURIComponent(`Hi ARISTO, I'm interested in the ${vehicle.name}.`)}`}
+                href={`${siteConfig.whatsappHref}?text=${encodeURIComponent(`Hi Fellah Express LLC, I'm interested in the ${vehicle.name}.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(buttonVariants({ variant: "whatsapp" }))}

@@ -108,7 +108,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<Si
     const error = !endpoint
       ? "SISGESC contact endpoint not configured (set SISGESC_API_URL or SISGESC_CONTACT_URL)"
       : "SISGESC site API key not configured (set SISGESC_SITE_API_KEY)";
-    console.warn("[ARISTO] SISGESC contact sync skipped:", error);
+    console.warn("[Fellah Express LLC] SISGESC contact sync skipped:", error);
     return { ok: false, configured: false, error, endpoint: endpoint || undefined };
   }
 
@@ -186,7 +186,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<Si
             .join("; ")
         : data.message;
       const error = describeHttpError(422, details || undefined, endpoint);
-      console.error("[ARISTO] SISGESC contact validation failed:", error, {
+      console.error("[Fellah Express LLC] SISGESC contact validation failed:", error, {
         endpoint,
         body,
       });
@@ -200,7 +200,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<Si
     }
 
     const error = describeHttpError(response.status, data.message, endpoint);
-    console.error("[ARISTO] SISGESC contact sync failed:", error, {
+    console.error("[Fellah Express LLC] SISGESC contact sync failed:", error, {
       status: response.status,
       endpoint,
     });
@@ -213,7 +213,7 @@ export async function sendLeadToSisgesc(payload: SisgescLeadPayload): Promise<Si
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : "SISGESC contact request failed";
-    console.error("[ARISTO] SISGESC contact request error:", message, { endpoint });
+    console.error("[Fellah Express LLC] SISGESC contact request error:", message, { endpoint });
     return {
       ok: false,
       configured: true,

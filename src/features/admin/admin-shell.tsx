@@ -84,8 +84,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           )}
         >
           <div className="flex h-16 items-center justify-between px-5">
-            <Link href="/admin" className="font-display text-2xl tracking-[0.18em]">
-              ARISTO
+            <Link href="/admin" className="font-display text-xl tracking-wide">
+              Fellah Express
             </Link>
             <button type="button" className="lg:hidden" onClick={() => setOpen(false)}>
               <X className="h-5 w-5" />

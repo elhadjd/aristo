@@ -18,7 +18,7 @@ export default async function FaqPage() {
       <JsonLd data={faqJsonLd(items)} />
       <PageHero
         title="FAQ"
-        description="Answers about buying used and luxury cars, financing, trade-ins, warranties, and test drives at ARISTO in Columbus, Ohio."
+        description="Answers about buying used and luxury cars, financing, trade-ins, warranties, and test drives at Fellah Express LLC in Columbus, Ohio."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />

@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 
 export const metadata: Metadata = buildMetadata({
   title: "Page Not Found",
-  description: "The ARISTO page you requested was not found. Browse used and luxury cars for sale in Columbus, Ohio.",
+  description: "The Fellah Express LLC page you requested was not found. Browse used and luxury cars for sale in Columbus, Ohio.",
   path: "/404",
   noIndex: true,
 });

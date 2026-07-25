@@ -1,152 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:3000/</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/inventory</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/inventory</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/financing</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/financing</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/trade-in</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/trade-in</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/services</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/services</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/about</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/about</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/testimonials</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/testimonials</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/faq</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/faq</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/contact</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/contact</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/articles</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/articles</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/privacy</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/privacy</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/terms</loc>
-    <lastmod>2026-07-24T05:17:15.826Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/terms</loc>
+    <lastmod>2026-07-25T19:26:07.134Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-012</loc>
-    <lastmod>2026-07-24T04:16:22.426Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-012</loc>
+    <lastmod>2026-07-25T19:26:01.235Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-011</loc>
-    <lastmod>2026-07-24T04:16:22.423Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-011</loc>
+    <lastmod>2026-07-25T19:26:01.231Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-010</loc>
-    <lastmod>2026-07-24T04:16:22.419Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-010</loc>
+    <lastmod>2026-07-25T19:26:01.227Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-009</loc>
-    <lastmod>2026-07-24T04:16:22.416Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-009</loc>
+    <lastmod>2026-07-25T19:26:01.222Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-008</loc>
-    <lastmod>2026-07-24T04:16:22.412Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-008</loc>
+    <lastmod>2026-07-25T19:26:01.217Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-007</loc>
-    <lastmod>2026-07-24T04:16:22.407Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-007</loc>
+    <lastmod>2026-07-25T19:26:01.213Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-006</loc>
-    <lastmod>2026-07-24T04:16:22.401Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-006</loc>
+    <lastmod>2026-07-25T19:26:01.206Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-005</loc>
-    <lastmod>2026-07-24T04:16:22.396Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-005</loc>
+    <lastmod>2026-07-25T19:26:01.198Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-004</loc>
-    <lastmod>2026-07-24T04:16:22.390Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-004</loc>
+    <lastmod>2026-07-25T19:26:01.192Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-003</loc>
-    <lastmod>2026-07-24T04:16:22.384Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-003</loc>
+    <lastmod>2026-07-25T19:26:01.185Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-002</loc>
-    <lastmod>2026-07-24T04:16:22.379Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-002</loc>
+    <lastmod>2026-07-25T19:26:01.179Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/vehicles/v-001</loc>
-    <lastmod>2026-07-24T04:16:22.372Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/vehicles/v-001</loc>
+    <lastmod>2026-07-25T19:26:01.172Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/articles/welcome-to-aristo</loc>
-    <lastmod>2026-07-24T01:51:25.696Z</lastmod>
+    <loc>https://aristo.zyvoerp.com/articles/welcome-to-fellah-express</loc>
+    <lastmod>2026-07-25T19:26:01.240Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

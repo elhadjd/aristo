@@ -134,7 +134,17 @@ export async function listTestimonials(): Promise<Testimonial[]> {
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
     const row = await prisma.siteSetting.findUnique({ where: { id: "default" } });
-    if (row) return mapDbSettings(row);
+    if (row) {
+      // Keep public branding in sync if an older seed still has the previous company name.
+      if (row.companyName === "ARISTO" || row.companyName === "ARISTO Auto Group") {
+        const updated = await prisma.siteSetting.update({
+          where: { id: "default" },
+          data: { companyName: mockSettings.companyName },
+        });
+        return mapDbSettings(updated);
+      }
+      return mapDbSettings(row);
+    }
   } catch {
     // fall through
   }
@@ -162,7 +172,7 @@ export async function listFaq() {
 
 export async function listArticles(publishedOnly = true) {
   try {
-    return prisma.article.findMany({
+    return await prisma.article.findMany({
       where: publishedOnly ? { published: true } : undefined,
       orderBy: { updatedAt: "desc" },
     });
@@ -173,7 +183,7 @@ export async function listArticles(publishedOnly = true) {
 
 export async function getArticle(slug: string) {
   try {
-    return prisma.article.findFirst({
+    return await prisma.article.findFirst({
       where: { slug, published: true },
     });
   } catch {

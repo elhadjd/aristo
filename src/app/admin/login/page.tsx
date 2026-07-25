@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
           }
         }}
       >
-        <p className="font-display text-3xl tracking-[0.18em]">ARISTO</p>
+        <p className="font-display text-2xl tracking-wide">Fellah Express LLC</p>
         <h1 className="mt-3 font-display text-3xl">Admin login</h1>
         <p className="mt-2 text-sm text-muted">
           Manage vehicles, galleries, services, articles, and site content.

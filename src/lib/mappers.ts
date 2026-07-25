@@ -47,7 +47,7 @@ export function mapDbVehicle(vehicle: VehicleWithRelations): Vehicle {
   return {
     id: vehicle.id,
     name: vehicle.name,
-    brand: vehicle.brand?.name || vehicle.brandName || "ARISTO",
+    brand: vehicle.brand?.name || vehicle.brandName || "Unknown",
     model: vehicle.model,
     year: vehicle.year,
     price: vehicle.price,

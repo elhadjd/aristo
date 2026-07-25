@@ -1,6 +1,6 @@
-# ARISTO
+# Fellah Express LLC
 
-Premium automotive dealership website for ARISTO — Columbus, Ohio.
+Premium automotive dealership website for Fellah Express LLC — Columbus, Ohio.
 
 Built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Prisma (SQLite)**, **Framer Motion**, **Zustand**, **React Hook Form**, **Zod**, and **Axios**.
 

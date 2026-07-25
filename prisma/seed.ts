@@ -19,10 +19,10 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email },
-    update: {},
+    update: { name: "Fellah Express LLC Admin" },
     create: {
       email,
-      name: "ARISTO Admin",
+      name: "Fellah Express LLC Admin",
       passwordHash: await bcrypt.hash(password, 10),
       role: "admin",
     },
@@ -30,7 +30,10 @@ async function main() {
 
   await prisma.siteSetting.upsert({
     where: { id: "default" },
-    update: {},
+    update: {
+      companyName: mockSettings.companyName,
+      description: "Premium automotive dealership in Columbus, Ohio.",
+    },
     create: {
       id: "default",
       companyName: mockSettings.companyName,
@@ -237,15 +240,33 @@ async function main() {
     });
   }
 
+  const legacyWelcome = await prisma.article.findUnique({ where: { slug: "welcome-to-aristo" } });
+  if (legacyWelcome) {
+    await prisma.article.update({
+      where: { id: legacyWelcome.id },
+      data: {
+        title: "Welcome to Fellah Express LLC",
+        slug: "welcome-to-fellah-express",
+        excerpt: "Discover how we curate premium vehicles and ownership experiences in Columbus.",
+        content:
+          "Fellah Express LLC brings boutique dealership standards to Central Ohio. Every vehicle is inspected, priced transparently, and supported with financing, trade-in, and delivery options.",
+      },
+    });
+  }
+
   await prisma.article.upsert({
-    where: { slug: "welcome-to-aristo" },
-    update: {},
+    where: { slug: "welcome-to-fellah-express" },
+    update: {
+      title: "Welcome to Fellah Express LLC",
+      content:
+        "Fellah Express LLC brings boutique dealership standards to Central Ohio. Every vehicle is inspected, priced transparently, and supported with financing, trade-in, and delivery options.",
+    },
     create: {
-      title: "Welcome to ARISTO",
-      slug: "welcome-to-aristo",
+      title: "Welcome to Fellah Express LLC",
+      slug: "welcome-to-fellah-express",
       excerpt: "Discover how we curate premium vehicles and ownership experiences in Columbus.",
       content:
-        "ARISTO brings boutique dealership standards to Central Ohio. Every vehicle is inspected, priced transparently, and supported with financing, trade-in, and delivery options.",
+        "Fellah Express LLC brings boutique dealership standards to Central Ohio. Every vehicle is inspected, priced transparently, and supported with financing, trade-in, and delivery options.",
       coverImage:
         "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80",
       published: true,

@@ -30,8 +30,8 @@ export function WhyAristo() {
     <section className="section-shell py-20 sm:py-24">
       <Reveal>
         <SectionHeading
-          eyebrow="The ARISTO standard"
-          title="Why choose ARISTO"
+          eyebrow="The Fellah Express LLC standard"
+          title="Why choose Fellah Express LLC"
           description="Luxury dealership polish with marketplace transparency—built for discerning Ohio drivers."
         />
       </Reveal>

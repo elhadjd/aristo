@@ -17,7 +17,7 @@ export function NewsletterForm() {
           toast.error("Enter a valid email");
           return;
         }
-        toast.success("You're on the list. Welcome to ARISTO.");
+        toast.success("You're on the list. Welcome to Fellah Express LLC.");
         setEmail("");
       }}
     >

@@ -30,7 +30,7 @@ export function PromoBanners({ rateFrom }: { rateFrom: number }) {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Trade-In</p>
           <h3 className="mt-3 font-display text-3xl sm:text-4xl">Unlock equity today</h3>
           <p className="mt-3 max-w-md text-sm text-muted">
-            Instant appraisal request. Apply value toward your next ARISTO vehicle.
+            Instant appraisal request. Apply value toward your next Fellah Express LLC vehicle.
           </p>
           <Link
             href="/trade-in"
