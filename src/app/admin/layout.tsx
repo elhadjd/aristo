@@ -1,7 +1,7 @@
 import { AdminShell } from "@/features/admin/admin-shell";
 
 export const metadata = {
-  title: "ARISTO Admin",
+  title: "Fellah Express LLC Admin",
   robots: { index: false, follow: false },
 };
 

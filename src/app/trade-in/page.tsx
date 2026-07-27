@@ -10,7 +10,7 @@ export default function TradeInPage() {
     <>
       <PageHero
         title="Trade In Your Car in Columbus, OH"
-        description="Get a fair trade-in appraisal at ARISTO, unlock equity, and apply value toward your next used or luxury vehicle."
+        description="Get a fair trade-in appraisal at Fellah Express LLC, unlock equity, and apply value toward your next used or luxury vehicle."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Trade-In" }]} />
@@ -31,7 +31,7 @@ export default function TradeInPage() {
               <li>
                 <strong className="text-foreground">3. Apply equity</strong>
                 <br />
-                Use your offer toward any ARISTO inventory vehicle.
+                Use your offer toward any Fellah Express LLC inventory vehicle.
               </li>
             </ol>
           </div>

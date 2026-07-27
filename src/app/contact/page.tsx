@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        title="Contact ARISTO in Columbus, OH"
+        title="Contact Fellah Express LLC in Columbus, OH"
         description="Call, WhatsApp, email, or visit 3431 Westerville Rd to speak with sales, schedule a test drive, or ask about financing."
       />
       <section className="section-shell py-12 sm:py-16">
@@ -64,7 +64,7 @@ export default function ContactPage() {
             </div>
             <div className="overflow-hidden rounded-2xl border border-border shadow-soft">
               <iframe
-                title="ARISTO Google Map"
+                title="Fellah Express LLC Google Map"
                 src={siteConfig.mapEmbedUrl}
                 className="h-72 w-full border-0"
                 loading="lazy"

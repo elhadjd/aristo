@@ -53,7 +53,7 @@ export function MapContactSection() {
         <Reveal delay={0.1}>
           <div className="overflow-hidden rounded-3xl border border-border shadow-soft">
             <iframe
-              title="ARISTO location map"
+              title="Fellah Express LLC location map"
               src={siteConfig.mapEmbedUrl}
               className="h-[360px] w-full border-0 sm:h-[420px]"
               loading="lazy"

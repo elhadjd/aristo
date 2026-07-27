@@ -52,7 +52,7 @@ export default async function InventoryPage({ searchParams }: { searchParams: Se
     <>
       <PageHero
         title="Used & Luxury Cars for Sale"
-        description="Shop curated used cars, SUVs, and luxury vehicles for sale in Columbus, Ohio — transparent pricing, financing, and test drives at ARISTO."
+        description="Shop curated used cars, SUVs, and luxury vehicles for sale in Columbus, Ohio — transparent pricing, financing, and test drives at Fellah Express LLC."
       />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Inventory" }]} />

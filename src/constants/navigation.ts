@@ -9,7 +9,7 @@ export const mainNav = [
 
 export const footerNav = {
   company: [
-    { label: "About ARISTO", href: "/about" },
+    { label: "About Fellah Express LLC", href: "/about" },
     { label: "Testimonials", href: "/testimonials" },
     { label: "Articles", href: "/articles" },
     { label: "FAQ", href: "/faq" },

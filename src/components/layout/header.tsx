@@ -31,12 +31,12 @@ export function Header() {
         <Link
           href="/"
           className={cn(
-            "font-display text-2xl tracking-[0.18em] sm:text-3xl",
+            "max-w-[11rem] font-display text-lg leading-tight tracking-wide sm:max-w-none sm:text-2xl",
             solid ? "text-foreground" : "text-white",
           )}
-          aria-label="ARISTO home"
+          aria-label={`${siteConfig.name} home`}
         >
-          ARISTO
+          {siteConfig.name}
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">

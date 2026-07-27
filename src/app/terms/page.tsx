@@ -8,7 +8,7 @@ export const metadata = pageMetadata("terms");
 export default function TermsPage() {
   return (
     <>
-      <PageHero title="Terms of Service" description="Guidelines for using the ARISTO website." />
+      <PageHero title="Terms of Service" description="Guidelines for using the Fellah Express LLC website." />
       <section className="section-shell py-12 sm:py-16">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Terms of Service" }]} />
         <article className="max-w-3xl space-y-5 text-sm leading-relaxed text-muted">
@@ -20,7 +20,7 @@ export default function TermsPage() {
           <h2 className="font-display text-2xl text-foreground">Vehicle information</h2>
           <p>
             While we strive for accuracy, listing details may contain errors. Final confirmation of
-            price, options, and condition occurs with an ARISTO representative before purchase.
+            price, options, and condition occurs with a Fellah Express LLC representative before purchase.
           </p>
           <h2 className="font-display text-2xl text-foreground">Financing estimates</h2>
           <p>

@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     // The lead is still kept locally so Admin can Resync later.
     if (!sync.ok && sync.configured !== false) {
       console.error(
-        `[ARISTO] Contact saved locally (${lead.id}) but SISGESC sync failed:`,
+        `[Fellah Express LLC] Contact saved locally (${lead.id}) but SISGESC sync failed:`,
         sync.error,
       );
       return NextResponse.json(
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
 
     if (!sync.ok) {
       console.warn(
-        `[ARISTO] Contact saved locally (${lead.id}) without SISGESC:`,
+        `[Fellah Express LLC] Contact saved locally (${lead.id}) without SISGESC:`,
         sync.error,
       );
     }
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
         { status: 422 },
       );
     }
-    console.error("[ARISTO] Contact submit failed", error);
+    console.error("[Fellah Express LLC] Contact submit failed", error);
     return NextResponse.json(
       { success: false, message: "Unable to submit request. Please try again." },
       { status: 500 },
