@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { MediaImage } from "@/components/shared/media-image";
 import { listArticles } from "@/lib/data";
 import { pageMetadata } from "@/lib/seo";
 
@@ -23,7 +23,7 @@ export default async function ArticlesPage() {
               className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition hover:-translate-y-1 hover:shadow-lift"
             >
               <div className="relative aspect-[16/10]">
-                <Image
+                <MediaImage
                   src={
                     article.coverImage ||
                     "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80"

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { MediaImage } from "@/components/shared/media-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { defaultKeywords, pageSeo } from "@/config/seo";
 import { getArticle } from "@/lib/data";
@@ -77,7 +77,7 @@ export default async function ArticlePage({ params }: Params) {
       <h1 className="mt-4 max-w-3xl font-display text-4xl sm:text-5xl">{article.title}</h1>
       {article.coverImage ? (
         <div className="relative mt-8 aspect-[16/8] overflow-hidden rounded-3xl">
-          <Image
+          <MediaImage
             src={article.coverImage}
             alt={article.title}
             fill

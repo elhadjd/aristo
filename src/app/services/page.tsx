@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   ArrowLeftRight,
   ClipboardCheck,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react";
 import { PageHero } from "@/components/shared/page-hero";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { MediaImage } from "@/components/shared/media-image";
 import { listServices } from "@/lib/data";
 import { pageMetadata } from "@/lib/seo";
 
@@ -46,7 +46,7 @@ export default async function ServicesPage() {
                 className="grid overflow-hidden rounded-3xl border border-border bg-card shadow-soft lg:grid-cols-[360px_1fr]"
               >
                 <div className="relative min-h-56">
-                  <Image
+                  <MediaImage
                     src={service.image}
                     alt={service.name}
                     fill

@@ -17,6 +17,7 @@ import type {
   Vehicle,
   VehicleCondition,
 } from "@/types/vehicle";
+import { resolveMediaSrc } from "@/lib/media-url";
 
 type VehicleWithRelations = DbVehicle & {
   images: VehicleImage[];
@@ -37,7 +38,7 @@ function parseJsonArray(value: string): string[] {
 export function mapDbVehicle(vehicle: VehicleWithRelations): Vehicle {
   const images = [...vehicle.images]
     .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((image) => image.url)
+    .map((image) => resolveMediaSrc(image.url))
     .filter(Boolean);
 
   const attributeFeatures = [...vehicle.attributes]
@@ -85,9 +86,10 @@ export function mapDbService(service: DbService): DealershipService {
     description: service.description,
     longDescription: service.longDescription || service.description,
     icon: service.icon || "Wrench",
-    image:
+    image: resolveMediaSrc(
       service.image ||
-      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1400&q=80",
+    ),
     benefits: parseJsonArray(service.benefits),
     featured: service.featured,
   };
@@ -99,9 +101,10 @@ export function mapDbCategory(category: DbCategory, vehicleCount = 0): Category 
     name: category.name,
     slug: category.slug,
     description: category.description,
-    image:
+    image: resolveMediaSrc(
       category.image ||
-      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1400&q=80",
+    ),
     vehicleCount,
   };
 }
@@ -111,7 +114,7 @@ export function mapDbBrand(brand: DbBrand, vehicleCount = 0): Brand {
     id: brand.id,
     name: brand.name,
     slug: brand.slug,
-    logo: brand.logo || undefined,
+    logo: brand.logo ? resolveMediaSrc(brand.logo) : undefined,
     vehicleCount,
   };
 }
@@ -123,7 +126,7 @@ export function mapDbTestimonial(item: DbTestimonial): Testimonial {
     role: item.role,
     rating: item.rating,
     content: item.content,
-    avatar: item.avatar || undefined,
+    avatar: item.avatar ? resolveMediaSrc(item.avatar) : undefined,
     vehiclePurchased: item.vehiclePurchased || undefined,
     created_at: item.createdAt.toISOString(),
   };
@@ -145,7 +148,7 @@ export function mapDbSettings(settings: SiteSetting): SiteSettings {
     address: settings.address,
     heroTitle: settings.heroTitle,
     heroSubtitle: settings.heroSubtitle,
-    heroImage: settings.heroImage,
+    heroImage: resolveMediaSrc(settings.heroImage),
     financingRateFrom: settings.financingRateFrom,
     social,
   };

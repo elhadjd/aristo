@@ -78,6 +78,8 @@ Set `NEXT_PUBLIC_SITE_URL` to your production domain before deploying so canonic
 
 By default the app serves images **without** `/_next/image` optimization (`NEXT_IMAGE_UNOPTIMIZED` defaults on). This avoids broken vehicle photos when the host/proxy returns 404 for the optimizer. On Vercel you can set `NEXT_IMAGE_UNOPTIMIZED=false`.
 
+Admin file uploads are stored under `uploads/` and served at `/api/uploads/...` (absolute URLs when `NEXT_PUBLIC_SITE_URL` is set), so previews work even when the host does not expose runtime `public/` files.
+
 ## Architecture
 
 ```
