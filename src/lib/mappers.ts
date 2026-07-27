@@ -92,6 +92,7 @@ export function mapDbService(service: DbService): DealershipService {
     ),
     benefits: parseJsonArray(service.benefits),
     featured: service.featured,
+    comingSoon: service.slug === "financing",
   };
 }
 

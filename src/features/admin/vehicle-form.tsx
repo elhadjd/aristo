@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ENGINE_OPTIONS } from "@/constants/engines";
 import { ImageField } from "@/features/admin/image-field";
 
 export type VehicleFormValues = {
@@ -218,7 +219,18 @@ export function VehicleForm({
           </Select>
         </Field>
         <Field label="Engine">
-          <Input value={values.engine} onChange={(e) => update("engine", e.target.value)} />
+          <Select value={values.engine} onChange={(e) => update("engine", e.target.value)}>
+            <option value="">Select engine</option>
+            {ENGINE_OPTIONS.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+            {values.engine &&
+            !ENGINE_OPTIONS.includes(values.engine as (typeof ENGINE_OPTIONS)[number]) ? (
+              <option value={values.engine}>{values.engine}</option>
+            ) : null}
+          </Select>
         </Field>
         <Field label="VIN">
           <Input value={values.vin} onChange={(e) => update("vin", e.target.value)} />
@@ -262,13 +274,13 @@ export function VehicleForm({
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => update("images", [...values.images, ""])}
+            onClick={() => update("images", ["", ...values.images])}
           >
             Add image
           </Button>
         </div>
         <p className="mt-1 text-sm text-muted">
-          Use an image URL or upload a file for each gallery slot.
+          New images are added at the top. Image 1 is the cover photo.
         </p>
         <div className="mt-4 space-y-4">
           {imageList.map((image, index) => (

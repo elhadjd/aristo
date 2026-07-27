@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MessageCircle, Phone } from "lucide-react";
 import { ContactForm } from "@/features/contact/contact-form";
-import { LoanCalculator } from "@/features/financing/loan-calculator";
 import { VehicleActions } from "@/features/vehicles/vehicle-actions";
 import { VehicleCard } from "@/features/vehicles/vehicle-card";
 import { VehicleGallery } from "@/features/vehicles/vehicle-gallery";
@@ -21,7 +20,6 @@ import {
 } from "@/lib/seo";
 import { cn } from "@/utils/cn";
 import { formatCurrency, formatMileage } from "@/utils/format";
-import { estimateMonthlyPayment } from "@/utils/vehicles";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -59,7 +57,6 @@ export default async function VehicleDetailsPage({ params }: Params) {
   if (!vehicle) notFound();
 
   const related = await listRelated(vehicle.id, 3);
-  const monthly = estimateMonthlyPayment(vehicle.price, 5000, 4.9, 60);
   const path = `/vehicles/${vehicle.id}`;
 
   return (
@@ -93,9 +90,7 @@ export default async function VehicleDetailsPage({ params }: Params) {
             <p className="mt-4 font-display text-3xl text-secondary">
               {formatCurrency(vehicle.price)}
             </p>
-            <p className="mt-2 text-sm text-muted">
-              Est. {formatCurrency(monthly)}/mo with $5,000 down
-            </p>
+            <p className="mt-2 text-sm text-muted">Financing coming soon</p>
             <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
               <Spec label="Year" value={String(vehicle.year)} />
               <Spec label="Mileage" value={formatMileage(vehicle.mileage)} />
@@ -168,7 +163,22 @@ export default async function VehicleDetailsPage({ params }: Params) {
             </section>
           </div>
           <div className="space-y-6">
-            <LoanCalculator defaultPrice={vehicle.price} />
+            <section className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <p className="inline-flex rounded-full border border-border bg-muted-bg px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-muted">
+                Coming soon
+              </p>
+              <h2 className="mt-4 font-display text-3xl">Financing</h2>
+              <p className="mt-3 text-sm text-muted">
+                Payment estimates and lender options will be available shortly. Contact us to discuss
+                this vehicle in the meantime.
+              </p>
+              <Link
+                href="/financing"
+                className={cn(buttonVariants({ variant: "outline" }), "mt-5 inline-flex")}
+              >
+                Learn more
+              </Link>
+            </section>
             <section className="rounded-2xl border border-border bg-card p-6 shadow-soft">
               <h2 className="font-display text-3xl">Dealer information</h2>
               <p className="mt-3 text-sm text-muted">{siteConfig.legalName}</p>

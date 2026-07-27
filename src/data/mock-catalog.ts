@@ -74,13 +74,14 @@ export const mockServices: DealershipService[] = [
     id: "svc-financing",
     name: "Financing",
     slug: "financing",
-    description: "Competitive rates tailored to your profile.",
+    description: "Coming soon — competitive rates tailored to your profile.",
     longDescription:
-      "Our finance specialists work with a curated lender network to structure clear monthly payments, competitive APRs, and flexible terms—without pressure.",
+      "Financing is launching soon. Our specialists will partner with a curated lender network to structure clear monthly payments, competitive APRs, and flexible terms—without pressure.",
     icon: "CreditCard",
     image: img("photo-1554224155-6726b3ff858f"),
     benefits: ["Multiple lender options", "Same-day pre-approval", "Transparent terms"],
     featured: true,
+    comingSoon: true,
   },
   {
     id: "svc-import",
