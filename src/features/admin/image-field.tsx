@@ -1,15 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { resolveMediaSrc } from "@/lib/media-url";
 
 export function ImageField({
   label,
   value,
   onChange,
-  hint = "Paste a URL or upload a file from your computer.",
+  hint = "Paste a full image URL (https://...) or upload a file from your computer.",
 }: {
   label: string;
   value: string;
@@ -18,6 +19,10 @@ export function ImageField({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [broken, setBroken] = useState(false);
+
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const previewSrc = useMemo(() => resolveMediaSrc(value, origin), [value, origin]);
 
   const upload = async (file: File) => {
     setUploading(true);
@@ -30,7 +35,9 @@ export function ImageField({
         toast.error(data.message || "Upload failed");
         return;
       }
-      onChange(String(data.url));
+      // Prefer absolute URL from API so <img> always has a complete src.
+      setBroken(false);
+      onChange(String(data.url || data.path || ""));
       toast.success("Image uploaded");
     } catch {
       toast.error("Upload failed");
@@ -46,8 +53,11 @@ export function ImageField({
       <div className="flex flex-col gap-2 sm:flex-row">
         <Input
           value={value}
-          placeholder="https://... or /uploads/photo.jpg"
-          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://example.com/photo.jpg"
+          onChange={(e) => {
+            setBroken(false);
+            onChange(e.target.value);
+          }}
         />
         <Button
           type="button"
@@ -70,11 +80,22 @@ export function ImageField({
         />
       </div>
       <p className="mt-1 text-xs text-muted">{hint}</p>
-      {value ? (
-        <div className="mt-2 overflow-hidden rounded-xl border border-border bg-surface">
-          {/* Admin preview supports both remote URLs and /uploads paths */}
+      {previewSrc ? (
+        <div className="mt-2 overflow-hidden rounded-xl border border-border bg-muted-bg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="" className="h-28 w-full object-cover" />
+          <img
+            key={previewSrc}
+            src={previewSrc}
+            alt=""
+            className="h-28 w-full object-cover"
+            onError={() => setBroken(true)}
+            onLoad={() => setBroken(false)}
+          />
+          {broken ? (
+            <p className="border-t border-border px-3 py-2 text-xs text-secondary">
+              Preview failed. Use a full https:// URL, or re-upload the file.
+            </p>
+          ) : null}
         </div>
       ) : null}
     </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Fuel, Gauge, GitCompareArrows, Heart, Settings2 } from "lucide-react";
 import { toast } from "sonner";
+import { MediaImage } from "@/components/shared/media-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
@@ -34,7 +34,7 @@ export function VehicleCard({
     >
       <Link href={`/vehicles/${vehicle.id}`} className="relative block overflow-hidden">
         <div className={cn("relative aspect-[16/10]", layout === "list" && "md:h-full")}>
-          <Image
+          <MediaImage
             src={vehicle.images[0]}
             alt={vehicle.name}
             fill

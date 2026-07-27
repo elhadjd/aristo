@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Search } from "lucide-react";
+import { MediaImage } from "@/components/shared/media-image";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { siteConfig } from "@/config/site";
 import { VehicleSearch } from "@/features/inventory/vehicle-search";
@@ -22,7 +22,7 @@ export function HomeHero({
 
   return (
     <section className="relative min-h-[100svh] overflow-hidden">
-      <Image
+      <MediaImage
         src={image}
         alt={`${siteConfig.name} luxury dealership showroom atmosphere`}
         fill

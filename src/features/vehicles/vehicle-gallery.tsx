@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import { MediaImage } from "@/components/shared/media-image";
 import { cn } from "@/utils/cn";
 
 export function VehicleGallery({ images, name }: { images: string[]; name: string }) {
@@ -16,7 +16,7 @@ export function VehicleGallery({ images, name }: { images: string[]; name: strin
         onClick={() => setZoomed((value) => !value)}
         aria-label={zoomed ? "Zoom out image" : "Zoom in image"}
       >
-        <Image
+        <MediaImage
           src={images[active] || images[0]}
           alt={`${name} photo ${active + 1}`}
           fill
@@ -43,7 +43,7 @@ export function VehicleGallery({ images, name }: { images: string[]; name: strin
             )}
             aria-label={`Show image ${index + 1}`}
           >
-            <Image src={image} alt="" fill sizes="120px" className="object-cover" />
+            <MediaImage src={image} alt="" fill sizes="120px" className="object-cover" />
           </button>
         ))}
       </div>
