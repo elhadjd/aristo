@@ -4,13 +4,14 @@ import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { imageAcceptAttribute } from "@/lib/image-upload";
 import { resolveMediaSrc } from "@/lib/media-url";
 
 export function ImageField({
   label,
   value,
   onChange,
-  hint = "Paste a full image URL (https://...) or upload a file from your computer.",
+  hint = "Paste a full image URL (https://...) or upload a photo (JPG, PNG, WEBP, HEIC, etc.).",
 }: {
   label: string;
   value: string;
@@ -23,6 +24,7 @@ export function ImageField({
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const previewSrc = useMemo(() => resolveMediaSrc(value, origin), [value, origin]);
+  const accept = useMemo(() => imageAcceptAttribute(), []);
 
   const upload = async (file: File) => {
     setUploading(true);
@@ -30,9 +32,14 @@ export function ImageField({
       const body = new FormData();
       body.append("file", file);
       const response = await fetch("/api/admin/media", { method: "POST", body });
-      const data = await response.json();
+      let data: { message?: string; url?: string; path?: string } = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
       if (!response.ok) {
-        toast.error(data.message || "Upload failed");
+        toast.error(data.message || `Upload failed (${response.status})`);
         return;
       }
       // Prefer absolute URL from API so <img> always has a complete src.
@@ -71,7 +78,7 @@ export function ImageField({
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept={accept}
           className="hidden"
           onChange={(event) => {
             const file = event.target.files?.[0];

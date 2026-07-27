@@ -25,6 +25,8 @@ export interface DealershipService {
   image: string;
   benefits: string[];
   featured: boolean;
+  /** Soft-launch flag — UI shows Coming soon and disables CTAs. */
+  comingSoon?: boolean;
 }
 
 export interface Testimonial {

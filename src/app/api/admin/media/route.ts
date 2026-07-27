@@ -5,6 +5,10 @@ import { requireAdminResponse, jsonError } from "@/lib/admin-api";
 import { prisma } from "@/lib/db";
 import { mediaOriginFromRequest, resolveMediaSrc } from "@/lib/media-url";
 import {
+  isAllowedImageUpload,
+  MAX_IMAGE_UPLOAD_BYTES,
+} from "@/lib/image-upload";
+import {
   ensureUploadsDir,
   getUploadsDir,
   sanitizeUploadFilename,
@@ -40,14 +44,16 @@ export async function POST(request: NextRequest) {
       return jsonError("File is required");
     }
 
-    if (!file.type.startsWith("image/")) {
-      return jsonError("Only image uploads are allowed", 400);
+    if (!isAllowedImageUpload(file)) {
+      return jsonError(
+        "Unsupported file type. Use JPG, PNG, WEBP, GIF, AVIF, HEIC, BMP, TIFF, or SVG.",
+        400,
+      );
     }
 
-    const maxBytes = 8 * 1024 * 1024;
     const bytes = Buffer.from(await file.arrayBuffer());
-    if (bytes.byteLength > maxBytes) {
-      return jsonError("Image must be 8MB or smaller", 400);
+    if (bytes.byteLength > MAX_IMAGE_UPLOAD_BYTES) {
+      return jsonError("Image must be 20MB or smaller", 400);
     }
 
     const safeName = sanitizeUploadFilename(file.name || "image.jpg");

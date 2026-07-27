@@ -10,17 +10,19 @@ export function PromoBanners({ rateFrom }: { rateFrom: number }) {
         <div className="relative overflow-hidden rounded-3xl bg-[#111827] p-8 text-white sm:p-10">
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-secondary/30 blur-3xl" />
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-            Financing
+            Financing · Coming soon
           </p>
-          <h3 className="mt-3 font-display text-3xl sm:text-4xl">Rates from {rateFrom}% APR</h3>
+          <h3 className="mt-3 font-display text-3xl sm:text-4xl">
+            Rates from {rateFrom}% APR
+          </h3>
           <p className="mt-3 max-w-md text-sm text-white/70">
-            Structure a payment plan that fits—transparent terms with specialist guidance.
+            We are preparing transparent payment plans and specialist guidance. Launching shortly.
           </p>
           <Link
             href="/financing"
             className={cn(buttonVariants({ variant: "secondary" }), "mt-6 inline-flex")}
           >
-            Get pre-qualified
+            Notify me soon
           </Link>
         </div>
       </Reveal>
