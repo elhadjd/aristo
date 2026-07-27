@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/reveal";
+import { MediaImage } from "@/components/shared/media-image";
 import { SectionHeading } from "@/components/ui/section-heading";
 import type { Category } from "@/types/common";
 
@@ -27,7 +27,7 @@ export function PopularCategories({ categories }: { categories: Category[] }) {
                 className="group relative block overflow-hidden rounded-2xl"
               >
                 <div className="relative aspect-[4/5]">
-                  <Image
+                  <MediaImage
                     src={category.image}
                     alt={category.name}
                     fill
